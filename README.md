@@ -1,2 +1,2 @@
 # Gol
-gol (Golang Open Library) is an interface from the OpenLibrary API.
+gol (**G**olang **O**pen **L**ibrary) is an interface for the OpenLibrary API.
