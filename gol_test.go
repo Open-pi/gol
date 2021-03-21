@@ -23,7 +23,6 @@ func TestGetWork(t *testing.T) {
 
 	// Test GetWork when WorkId is valid
 	result, err := gol.GetWork("OL45583W")
-	t.Log(result)
 	if !cmp.Equal(w, result) || err != nil {
 		t.Error("Incorrect GetWork(OL45583W)")
 	}
