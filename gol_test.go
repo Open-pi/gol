@@ -72,4 +72,9 @@ func TestGetBook(t *testing.T) {
 	if !cmp.Equal(b, result) || err != nil {
 		t.Error("Incorrect result GetBook(OL4554174M)")
 	}
+
+	result, err = gol.GetBook("OL4554174")
+	if err == nil {
+		t.Error("GetBook did not return an err when calling an inexistent book")
+	}
 }
