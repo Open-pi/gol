@@ -7,34 +7,7 @@ import (
 	"github.com/google/go-cmp/cmp"
 )
 
-func TestGetWork(t *testing.T) {
-	w := gol.Work{
-		Created:        gol.Time{Type: "/type/datetime", Value: "2009-10-15T11:23:34.130855"},
-		Subjects:       []string{"History and criticism", "Russian literature", "Russian literature, history and criticism"},
-		LatestRevision: 4,
-		Key:            "/works/OL45583W",
-		Title:          "An outline of Russian literature",
-		Authors:        []gol.AuthorAndType{{gol.Type{"/type/author_role"}, gol.Author{"/authors/OL18295A"}}},
-		Type:           gol.Type{"/type/work"},
-		LastModified:   gol.Time{Type: "/type/datetime", Value: "2020-08-20T03:30:30.325116"},
-		Covers:         []int{5917705},
-		Revision:       4,
-	}
-
-	// Test GetWork when WorkId is valid
-	result, err := gol.GetWork("OL45583W")
-	if !cmp.Equal(w, result) || err != nil {
-		t.Error("Incorrect result GetWork(OL45583W)")
-	}
-
-	// Test GetWork when workId is invalid
-	result, err = gol.GetWork("notAnId")
-	if err == nil {
-		t.Error("GetWork did not return an err when calling an inexistent work")
-	}
-}
-
-func TestGetBook(t *testing.T) {
+func TestGetEdition(t *testing.T) {
 	b := gol.Book{
 		Publishers:        []string{"Oxford University Press"},
 		Identifiers:       gol.Identifiers{Librarything: []string{"23538"}, Goodreads: []string{"3109896"}},
@@ -68,37 +41,13 @@ func TestGetBook(t *testing.T) {
 		Created:           gol.Time{Type: "/type/datetime", Value: "2008-04-01T03:28:50.625462"},
 		LastModified:      gol.Time{Type: "/type/datetime", Value: "2021-03-03T05:21:06.382367"},
 	}
-	result, err := gol.GetBook("OL4554174M")
+	result, err := gol.GetEdition("OL4554174M")
 	if !cmp.Equal(b, result) || err != nil {
-		t.Error("Incorrect result GetBook(OL4554174M)")
+		t.Error("Incorrect result GetEdition(OL4554174M)")
 	}
 
-	result, err = gol.GetBook("OL4554174")
+	result, err = gol.GetEdition("OL4554174")
 	if err == nil {
-		t.Error("GetBook did not return an err when calling an inexistent book")
-	}
-}
-
-func TestGetCoverURL(t *testing.T) {
-	cover := "http://covers.openlibrary.org/b/olid/OL4554174M-S.jpg"
-	result := gol.GetCoverURL("b", "olid", "OL4554174M", "S")
-	if result != cover {
-		t.Error("URL returned is not correct")
-	}
-}
-
-func TestGetBookCoverURL(t *testing.T) {
-	cover := "http://covers.openlibrary.org/b/olid/OL4554174M-S.jpg"
-	result := gol.GetBookCoverURL("olid", "OL4554174M", "S")
-	if result != cover {
-		t.Error("URL returned is not correct")
-	}
-}
-
-func TestGetAuthorCoverURL(t *testing.T) {
-	cover := "http://covers.openlibrary.org/a/olid/OL229501A-S.jpg"
-	result := gol.GetAuthorCoverURL("olid", "OL229501A", "S")
-	if result != cover {
-		t.Error("URL returned is not correct")
+		t.Error("GetEdition did not return an err when calling an inexistent book")
 	}
 }
