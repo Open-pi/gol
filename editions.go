@@ -17,7 +17,7 @@ type Book struct {
 	IaLoadedID        []string    `json:"ia_loaded_id"`
 	LcClassifications []string    `json:"lc_classifications"`
 	Key               string      `json:"key"`
-	Authors           []Author    `json:"authors"`
+	AuthorsKey        []AuthorKey `json:"authors"`
 	Ocaid             string      `json:"ocaid"`
 	PublishPlaces     []string    `json:"publish_places"`
 	Subjects          []string    `json:"subjects"`

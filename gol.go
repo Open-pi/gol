@@ -10,7 +10,7 @@ type Time struct {
 	Value string `json:"value"`
 }
 
-type Author struct {
+type AuthorKey struct {
 	Key string `json:"key"`
 }
 
@@ -18,7 +18,7 @@ type Type struct {
 	Key string `json:"key"`
 }
 
-type AuthorAndType struct {
-	Type   Type
-	Author Author
+type AuthorKeyAndType struct {
+	Type      Type      `json:"type"`
+	AuthorKey AuthorKey `json:"Author"`
 }

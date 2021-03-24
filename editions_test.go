@@ -17,7 +17,7 @@ func TestGetEdition(t *testing.T) {
 		IaLoadedID:        []string{"selfishgene00dawk"},
 		LcClassifications: []string{"QH437 .D38 1978"},
 		Key:               "/books/OL4554174M",
-		Authors:           []gol.Author{{"/authors/OL236174A"}},
+		AuthorsKey:        []gol.AuthorKey{{"/authors/OL236174A"}},
 		Ocaid:             "selfishgene00dawk",
 		PublishPlaces:     []string{"New York"},
 		Subjects:          []string{"Genetics.", "Evolution (Biology)"},
@@ -41,12 +41,12 @@ func TestGetEdition(t *testing.T) {
 		Created:           gol.Time{Type: "/type/datetime", Value: "2008-04-01T03:28:50.625462"},
 		LastModified:      gol.Time{Type: "/type/datetime", Value: "2021-03-03T05:21:06.382367"},
 	}
-	result, err := gol.GetEdition("OL4554174M")
-	if !cmp.Equal(b, result) || err != nil {
-		t.Error("Incorrect result GetEdition(OL4554174M)")
+	tr, err := gol.GetEdition("OL4554174M")
+	if !cmp.Equal(b, tr) || err != nil {
+		t.Error("Incorrect testresult GetEdition(OL4554174M)")
 	}
 
-	result, err = gol.GetEdition("OL4554174")
+	tr, err = gol.GetEdition("OL4554174")
 	if err == nil {
 		t.Error("GetEdition did not return an err when calling an inexistent book")
 	}

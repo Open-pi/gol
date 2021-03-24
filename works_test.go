@@ -13,7 +13,7 @@ var w gol.Work = gol.Work{
 	LatestRevision: 4,
 	Key:            "/works/OL45583W",
 	Title:          "An outline of Russian literature",
-	Authors:        []gol.AuthorAndType{{gol.Type{"/type/author_role"}, gol.Author{"/authors/OL18295A"}}},
+	AuthorsKey:     []gol.AuthorKeyAndType{{gol.Type{"/type/author_role"}, gol.AuthorKey{"/authors/OL18295A"}}},
 	Type:           gol.Type{"/type/work"},
 	LastModified:   gol.Time{Type: "/type/datetime", Value: "2020-08-20T03:30:30.325116"},
 	Covers:         []int{5917705},
@@ -22,13 +22,14 @@ var w gol.Work = gol.Work{
 
 func TestGetWork(t *testing.T) {
 	// Test GetWork when WorkId is valid
-	result, err := gol.GetWork("OL45583W")
-	if !cmp.Equal(w, result) || err != nil {
-		t.Error("Incorrect result GetWork(OL45583W)")
+	tr, err := gol.GetWork("OL45583W")
+	if !cmp.Equal(w, tr) || err != nil {
+		t.Error("Incorrect testresult GetWork(OL45583W)")
+		t.Log(tr)
 	}
 
 	// Test GetWork when workId is invalid
-	result, err = gol.GetWork("notAnId")
+	tr, err = gol.GetWork("notAnId")
 	if err == nil {
 		t.Error("GetWork did not return an err when calling an inexistent work")
 	}
@@ -36,9 +37,9 @@ func TestGetWork(t *testing.T) {
 
 func TestCover(t *testing.T) {
 	tt := []struct {
-		name   string
-		input  string
-		result string
+		name  string
+		input string
+		tr    string
 	}{
 		{"Test Small cover", "S", "http://covers.openlibrary.org/b/id/5917705-S.jpg"},
 		{"Test Medium cover", "M", "http://covers.openlibrary.org/b/id/5917705-M.jpg"},
@@ -49,8 +50,8 @@ func TestCover(t *testing.T) {
 	for _, tc := range tt {
 		t.Run(tc.name, func(t *testing.T) {
 			c := w.Cover(tc.input)
-			if c != tc.result {
-				t.Fatalf("Cover returned is incorrect, %s instead of %s", c, tc.result)
+			if c != tc.tr {
+				t.Fatalf("Cover returned is incorrect, %s instead of %s", c, tc.tr)
 			}
 		})
 	}
