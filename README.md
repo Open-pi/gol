@@ -2,6 +2,8 @@
 gol (**G**olang **O**pen **L**ibrary) is an interface for the OpenLibrary API. For more information about the API itself please visit [openlibrary.org](https://openlibrary.org/developers/api)
 
 ## Functions
+These are the API functions (WorkAPI, EditionAPI, etc) to get the data. With them you can make other calls. For more information, browse the `docs` folder where you can find additional information.
+
 | Functions | Args | Returns  |
 |---|---|--|
 | GetWork   | WorkId | (w Work, err error)  |
@@ -15,12 +17,6 @@ gol (**G**olang **O**pen **L**ibrary) is an interface for the OpenLibrary API. F
     work := gol.GetWork("OL45583W")
     // Output:
     // gol.Work{
-    //  Created:        gol.Time{Type: "/type/datetime", Value: "2009-10-15T11:23:34.130855"},
-    //	Subjects:       []string{"History and criticism", "Russian literature", "Russian literature, history and criticism"},
-    //	LatestRevision: 4,
-    //	Key:            "/works/OL45583W",
-    //	Title:          "An outline of Russian literature",
-    //	Authors:        []gol.AuthorAndType{{gol.Type{"/type/author_role"}, gol.Author{"/authors/OL18295A"}}},
     //  ...
     // }
 ```
