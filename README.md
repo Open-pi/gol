@@ -5,7 +5,7 @@ gol (**G**olang **O**pen **L**ibrary) is an interface for the OpenLibrary API. F
 | Functions | Args | Returns  |
 |---|---|--|
 | GetWork   | WorkId | (w Work, err error)  |
-| GetBook   | OLID | (b Book, err error)  |
+| GetEdition   | OLID | (b Book, err error)  |
 | GetCoverURL   | coverType, identifierType, identifier, size | string  |
 | GetBookCoverURL   | identifierType, identifier, size | string  |
 | GetAuthorCoverURL   | identifierType, identifier, size | string  |
@@ -27,7 +27,7 @@ gol (**G**olang **O**pen **L**ibrary) is an interface for the OpenLibrary API. F
 
 ### EditionAPI Examples
 ```go
-    book := gol.GetBook("OL4554174M")
+    book := gol.GetEdition("OL4554174M")
     // Output:
     // gol.Book{
     //  Publishers:        []string{"Oxford University Press"},

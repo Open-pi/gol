@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"strconv"
 )
 
 type Work struct {
@@ -37,4 +38,10 @@ func GetWork(id string) (w Work, err error) {
 		return w, errors.New("Work not found")
 	}
 	return
+}
+
+// Cover returns the cover url to the "first" edition.
+// It takes size as an argument; it can be (S, M, or L)
+func (w Work) Cover(size string) string {
+	return GetBookCoverURL("id", strconv.Itoa(w.Covers[0]), size)
 }
