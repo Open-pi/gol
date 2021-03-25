@@ -8,6 +8,7 @@ import (
 	"net/http"
 )
 
+// Book holds all the information returned from the EditionAPI
 type Book struct {
 	Publishers        []string    `json:"publishers"`
 	Identifiers       Identifiers `json:"identifiers"`
@@ -27,7 +28,7 @@ type Book struct {
 	DeweyDecimalClass []string    `json:"dewey_decimal_class"`
 	Notes             Notes       `json:"notes"`
 	NumberOfPages     int         `json:"number_of_pages"`
-	Languages         []Languages `json:"languages"`
+	Languages         []Language  `json:"languages"`
 	Lccn              []string    `json:"lccn"`
 	Isbn10            []string    `json:"isbn_10"`
 	PublishDate       string      `json:"publish_date"`
@@ -43,6 +44,7 @@ type Book struct {
 	Error             string      `json:"error"`
 }
 
+// Identifiers of the books
 type Identifiers struct {
 	Google           []string `json:"google"`
 	Lccn             []string `json:"lccn"`
@@ -55,15 +57,18 @@ type Identifiers struct {
 	Goodreads        []string `json:"goodreads"`
 }
 
+// Notes on books available in OpenLibrary
 type Notes struct {
 	Type  string `json:"type"`
 	Value string `json:"value"`
 }
 
-type Languages struct {
+// Language of book
+type Language struct {
 	Key string `json:"key"`
 }
 
+// Works
 type Works struct {
 	Key string `json:"key"`
 }

@@ -9,6 +9,7 @@ import (
 	"strconv"
 )
 
+// Work holds all the information about works coming from openlibrary
 type Work struct {
 	Created        Time               `json:"created"`
 	Subjects       []string           `json:"subjects"`
@@ -44,4 +45,17 @@ func GetWork(id string) (w Work, err error) {
 // It takes size as an argument; it can be (S, M, or L)
 func (w Work) Cover(size string) string {
 	return GetBookCoverURL("id", strconv.Itoa(w.Covers[0]), size)
+}
+
+// Authors returns more information about the authors (using AuthorsKey)
+func (w Work) Authors() (a []Author, err error) {
+	for _, authorkey := range w.AuthorsKey {
+		key := authorkey.AuthorKey.Key[9:]
+		author, err := GetAuthor(key)
+		if err != nil {
+			return a, err
+		}
+		a = append(a, author)
+	}
+	return
 }

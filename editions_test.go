@@ -27,7 +27,7 @@ func TestGetEdition(t *testing.T) {
 		DeweyDecimalClass: []string{"591.5"},
 		Notes:             gol.Notes{"/type/text", "Bibliography: p. [217]-220.\nIncludes index."},
 		NumberOfPages:     224,
-		Languages:         []gol.Languages{{"/languages/eng"}},
+		Languages:         []gol.Language{{"/languages/eng"}},
 		Lccn:              []string{"77023844"},
 		Isbn10:            []string{"0195200004"},
 		PublishDate:       "1978",
