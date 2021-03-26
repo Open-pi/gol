@@ -9,6 +9,7 @@ In it's simplest form, `GetWork` will fetch all the data and returns a filled `W
 |---|---|--|
 | GetWork   | WorkId | (w Work, err error)  |
 | (w Work) Cover   | size | URL of cover  |
+| (w Work) Authors   |  | []Authors  |
 
 ### WorkAPI Examples
 ```go
@@ -27,4 +28,8 @@ In it's simplest form, `GetWork` will fetch all the data and returns a filled `W
     cover := work.Cover("L") // Get a large cover of the work
     // Output:
     // http://covers.openlibrary.org/b/id/5917705-L.jpg 
+    
+    authors, err := work.Authors() // Get the list of authors that contributed to the work.
+    // Output:
+    // []Authors
 ```
