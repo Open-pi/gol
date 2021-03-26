@@ -28,6 +28,7 @@ type Book struct {
 	DeweyDecimalClass []string    `json:"dewey_decimal_class"`
 	Notes             Notes       `json:"notes"`
 	NumberOfPages     int         `json:"number_of_pages"`
+	TranslatedFrom    []Language  `json:"translated_from"`
 	Languages         []Language  `json:"languages"`
 	Lccn              []string    `json:"lccn"`
 	Isbn10            []string    `json:"isbn_10"`

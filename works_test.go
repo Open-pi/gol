@@ -74,11 +74,15 @@ func TestCover(t *testing.T) {
 	}
 }
 
-func TestAuthor(t *testing.T) {
+func TestAuthors(t *testing.T) {
 	tr, err := w.Authors()
 	if err != nil {
 		t.Errorf("w.Authors() returned an error, %v expecting an Author slice", err)
 	} else if !cmp.Equal(tr, authors) {
 		t.Errorf("Expected set of authors not correct")
 	}
+}
+
+func TestWork_Editions(t *testing.T) {
+	w.Editions()
 }
