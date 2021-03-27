@@ -42,7 +42,6 @@ func TestGetWork(t *testing.T) {
 	tr, err := gol.GetWork("OL45583W")
 	if !cmp.Equal(w, tr) || err != nil {
 		t.Error("Incorrect testresult GetWork(OL45583W)")
-		t.Log(tr)
 	}
 
 	// Test GetWork when workId is invalid
@@ -84,5 +83,34 @@ func TestAuthors(t *testing.T) {
 }
 
 func TestWork_Editions(t *testing.T) {
-	w.Editions()
+	t.Parallel()
+	tt := []struct {
+		name  string
+		input gol.Work
+		tr    []gol.Book
+	}{
+		{"Test Editions of same work", w, editions},
+	}
+	for _, tc := range tt {
+		tc := tc // capture range variable
+		t.Run(tc.name, func(t *testing.T) {
+			t.Parallel()
+			tr, err := tc.input.Editions()
+			if err != nil {
+				t.Fatalf("%s returned an error %v", tc.name, err)
+			}
+			if !cmp.Equal(tr, tc.tr) {
+				t.Fatalf("Unexpected result: test result different from testdata")
+			}
+		})
+	}
+
+	name := "Test Editions of inexistent work"
+	t.Run(name, func(t *testing.T) {
+		t.Parallel()
+		_, err := gol.GetWork("notAndId")
+		if err == nil {
+			t.Fatalf("%s, should return error; got %v", name, err)
+		}
+	})
 }

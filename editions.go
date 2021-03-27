@@ -9,6 +9,7 @@ import (
 )
 
 // Book holds all the information returned from the EditionAPI
+// TODO: Add Id field, table of contents, series
 type Book struct {
 	Publishers        []string    `json:"publishers"`
 	Identifiers       Identifiers `json:"identifiers"`
@@ -25,6 +26,8 @@ type Book struct {
 	Pagination        string      `json:"pagination"`
 	SourceRecords     []string    `json:"source_records"`
 	Title             string      `json:"title"`
+	SubTitle          string      `json:"subtitle"`
+	EditionName       string      `json:"edition_name"`
 	DeweyDecimalClass []string    `json:"dewey_decimal_class"`
 	Notes             Notes       `json:"notes"`
 	NumberOfPages     int         `json:"number_of_pages"`
