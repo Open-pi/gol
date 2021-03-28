@@ -35,3 +35,11 @@ func TestGetAuthor(t *testing.T) {
 		t.Error(a)
 	}
 }
+
+func TestWorks(t *testing.T) {
+	t.Parallel()
+	_, err := a.Works()
+	if err != nil {
+		t.Errorf("Expecting []Works, got error %v", err)
+	}
+}
