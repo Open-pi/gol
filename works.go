@@ -61,6 +61,7 @@ func (w Work) Authors() (a []Author, err error) {
 	return
 }
 
+// Editions returns an array of books linked to the work
 func (w *Work) Editions() ([]Book, error) {
 	editions := struct {
 		Entries []Book `json:"entries"`

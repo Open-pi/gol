@@ -9,7 +9,8 @@ In it's simplest form, `GetWork` will fetch all the data and returns a filled `W
 |---|---|--|
 | GetWork   | WorkId | (w Work, err error)  |
 | (w Work) Cover   | size | URL of cover  |
-| (w Work) Authors   |  | []Authors  |
+| (w Work) Authors   |  | []Authors, err  |
+| (w Work) Editions |  | []Book, err |
 
 ### WorkAPI Examples
 ```go
@@ -32,4 +33,8 @@ In it's simplest form, `GetWork` will fetch all the data and returns a filled `W
     authors, err := work.Authors() // Get the list of authors that contributed to the work.
     // Output:
     // []Authors
+
+    editions, err := work.Editions() // Get the list of editions liked to the work.
+    // Output:
+    // []Book
 ```
