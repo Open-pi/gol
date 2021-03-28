@@ -4,6 +4,7 @@
 gol (**G**olang **O**pen **L**ibrary) is an interface for the OpenLibrary API. For more information about the API itself please visit [openlibrary.org](https://openlibrary.org/developers/api).
 
 [![Go Reference](https://pkg.go.dev/badge/github.com/Open-pi/gol.svg)](https://pkg.go.dev/github.com/Open-pi/gol)
+![go](https://github.com/Open-pi/gol/actions/workflows/go.yml/badge.svg)
 
 ## Functions
 These are the API functions (WorkAPI, EditionAPI, etc) to get the data. With them you can make other calls.
