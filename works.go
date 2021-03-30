@@ -16,6 +16,8 @@ type Work struct {
 	LatestRevision   int                `json:"latest_revision"`
 	Key              string             `json:"key"`
 	Title            string             `json:"title"`
+	Subtitle         string             `json:"subtitle"`
+	FirstPublishDate string             `json:"first_publish_date"`
 	AuthorsKey       []AuthorKeyAndType `json:"authors"`
 	Type             Type               `json:"type"`
 	LastModified     Time               `json:"last_modified"`

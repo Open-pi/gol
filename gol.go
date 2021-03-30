@@ -22,3 +22,8 @@ type AuthorKeyAndType struct {
 	Type      Type      `json:"type"`
 	AuthorKey AuthorKey `json:"Author"`
 }
+
+type TypeValue struct {
+	Type  string `json:"type"`
+	Value string `josn:"value"`
+}

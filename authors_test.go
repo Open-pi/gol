@@ -25,21 +25,34 @@ var a gol.Author = gol.Author{
 }
 
 func TestGetAuthor(t *testing.T) {
-	tr, err := gol.GetAuthor("OL236174A")
-	if err != nil {
-		t.Errorf("GetAuthor(OL23617A) returned error : %s when Author ID is correct", err)
+	tt := []struct {
+		name  string
+		input string
+		tr    gol.Author
+	}{
+		{"Test Author Richard Dawkins", "OL236174A", a},
+		{"Test Author Sam Harris", "OL709883A", harris},
 	}
-	if !cmp.Equal(tr, a) {
-		t.Errorf("GetAuthor(OL23617A) is incorrect")
-		t.Error(tr)
-		t.Error(a)
+	for _, tc := range tt {
+		t.Run(tc.name, func(t *testing.T) {
+			a, err := gol.GetAuthor(tc.input)
+			if err != nil {
+				t.Fatalf("%s returned error : %s when Author ID is correct", tc.name, err)
+			}
+			if !cmp.Equal(a, tc.tr) {
+				t.Fatalf("Returned Author is different from expected author struct")
+			}
+		})
 	}
 }
 
 func TestWorks(t *testing.T) {
 	t.Parallel()
-	_, err := a.Works()
+	tr, err := harris.Works()
 	if err != nil {
 		t.Errorf("Expecting []Works, got error %v", err)
+	}
+	if !cmp.Equal(tr, works) {
+		t.Error("Returned Works are different from expected works")
 	}
 }
