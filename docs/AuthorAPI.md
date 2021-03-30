@@ -17,4 +17,8 @@ Here are some examples of how you could use the AuthorAPI.
 	//  PersonalName:   "Richard Dawkins",
 	//  ....
     // }
+	
+	works := author.Works() // Get the Works of the author
+	// Output:
+	// []Works
 ```
