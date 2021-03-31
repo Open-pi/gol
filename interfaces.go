@@ -20,5 +20,8 @@ func Authors(i IKeyAuthors) (a []Author, err error) {
 }
 
 func Cover(c Coverer, size string) string {
-	return GetBookCoverURL("id", c.KeyCover(), size)
+	if id := c.KeyCover(); id != "" {
+		return GetBookCoverURL("id", id, size)
+	}
+	return ""
 }

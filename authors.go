@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"strconv"
 )
 
 type Author struct {
@@ -98,4 +99,17 @@ func (a Author) works(offset string) ([]Work, error) {
 	}
 
 	return works.Entries, err
+}
+
+// KeyCover returns (if it exists) the URL of the Author's Photo/Cover
+func (a Author) KeyCover() string {
+	if len(a.Photos) > 0 {
+		return strconv.Itoa(a.Photos[0])
+	}
+	return ""
+}
+
+// Cover returns (if it exists) the URL of the Author's Phote/Cover
+func (a Author) Cover(size string) string {
+	return Cover(a, size)
 }

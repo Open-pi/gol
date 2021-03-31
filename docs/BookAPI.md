@@ -31,6 +31,10 @@ In these examples you will find the most useful methods/function, for more low l
     
     // Returns all the information of the book's authors
     authors := book.Authors() // Alternatively you can use Authors(book)
+    // Output:
+    // []Author
     
     cover := book.Cover("S") // Returns the URL of the book's cover (size Small)
+    // Output:
+    // string
 ```
