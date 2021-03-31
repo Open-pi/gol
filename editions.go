@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"strconv"
 )
 
 // Book holds all the information returned from the EditionAPI
@@ -106,4 +107,17 @@ func (b Book) KeyAuthors() []string {
 // Authors returns all the information related to the book's authors
 func (b Book) Authors() (a []Author, err error) {
 	return Authors(b)
+}
+
+// KeyCover returns (if it exists) the ID of the work's cover
+func (b Book) KeyCover() string {
+	if len(b.Covers) > 0 {
+		return strconv.Itoa(b.Covers[0])
+	}
+	return ""
+}
+
+// Cover returns (if it exists) the URL of the Book's Cover
+func (b Book) Cover(size string) string {
+	return Cover(b, size)
 }

@@ -4,6 +4,10 @@ type IKeyAuthors interface {
 	KeyAuthors() []string
 }
 
+type Coverer interface {
+	KeyCover() string
+}
+
 func Authors(i IKeyAuthors) (a []Author, err error) {
 	for _, key := range i.KeyAuthors() {
 		author, err := GetAuthor(key)
@@ -13,4 +17,8 @@ func Authors(i IKeyAuthors) (a []Author, err error) {
 		a = append(a, author)
 	}
 	return
+}
+
+func Cover(c Coverer, size string) string {
+	return GetBookCoverURL("id", c.KeyCover(), size)
 }

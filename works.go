@@ -44,10 +44,18 @@ func GetWork(id string) (w Work, err error) {
 	return
 }
 
+// KeyCover returns (if it exists) the ID of the work's cover
+func (w Work) KeyCover() string {
+	if len(w.Covers) > 0 {
+		return strconv.Itoa(w.Covers[0])
+	}
+	return ""
+}
+
 // Cover returns the cover url to the "first" edition.
 // It takes size as an argument; it can be (S, M, or L)
 func (w Work) Cover(size string) string {
-	return GetBookCoverURL("id", strconv.Itoa(w.Covers[0]), size)
+	return Cover(w, size)
 }
 
 // KeyAuthors returns array of all authors keys
