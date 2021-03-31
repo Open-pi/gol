@@ -2,6 +2,8 @@
 Here you can find all the information on how to get Books and what methods the `Book` struct has.
 
 ### EditionAPI Examples
+In these examples you will find the most useful methods/function, for more low level on Book structs you can look at the documentation.
+
 ```go
     book := gol.GetEdition("OL4554174M")
     // Output:
@@ -26,4 +28,9 @@ Here you can find all the information on how to get Books and what methods the `
     //	Created:           gol.Time{Type: "/type/datetime", Value: "2008-04-01T03:28:50.625462"},
     //	LastModified:      gol.Time{Type: "/type/datetime", Value: "2021-03-03T05:21:06.382367"},
     // }
+    
+    // Returns all the information of the book's authors
+    authors := book.Authors() // Alternatively you can use Authors(book)
+    
+    cover := book.Cover("S") // Returns the URL of the book's cover (size Small)
 ```

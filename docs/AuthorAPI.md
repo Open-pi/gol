@@ -9,14 +9,14 @@ In these docs you will find all the methods of the `Author` struct. To populate 
 Here are some examples of how you could use the AuthorAPI.
 ```go
     author := gol.GetAuthor("OL236174A") // Get the Author Richard Dawkins
-    // Output:
-    // gol.Author {
+	// Output:
+	// gol.Author {
 	//  Bio:    gol.Bio{Type: "/type/text", Value: "Clinton Richard Dawkins, FRS, FRSL is a British ethologist, evolutionary biologist and popular science author..."},
 	//  Name:           "Richard Dawkins",
 	//  Title:          "FRS, FRSL",
 	//  PersonalName:   "Richard Dawkins",
 	//  ....
-    // }
+	// }
 	
 	works := author.Works() // Get the Works of the author
 	// Output:
