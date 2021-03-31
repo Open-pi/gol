@@ -50,17 +50,18 @@ func (w Work) Cover(size string) string {
 	return GetBookCoverURL("id", strconv.Itoa(w.Covers[0]), size)
 }
 
+// KeyAuthors returns array of all authors keys
+func (w Work) KeyAuthors() []string {
+	a := make([]string, len(w.AuthorsKey))
+	for i, AuthorKey := range w.AuthorsKey {
+		a[i] = AuthorKey.AuthorKey.Key[9:]
+	}
+	return a
+}
+
 // Authors returns more information about the authors (using AuthorsKey)
 func (w Work) Authors() (a []Author, err error) {
-	for _, authorkey := range w.AuthorsKey {
-		key := authorkey.AuthorKey.Key[9:]
-		author, err := GetAuthor(key)
-		if err != nil {
-			return a, err
-		}
-		a = append(a, author)
-	}
-	return
+	return Authors(w)
 }
 
 // Editions returns an array of books linked to the work

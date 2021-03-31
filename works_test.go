@@ -73,6 +73,13 @@ func TestCover(t *testing.T) {
 	}
 }
 
+func TestWorkKeyAuthors(t *testing.T) {
+	a := w.KeyAuthors()
+	if !cmp.Equal(a, []string{"OL18295A"}) {
+		t.Errorf("Unexpected returned array. Expecting [OL18295A] got %v", a)
+	}
+}
+
 func TestAuthors(t *testing.T) {
 	tr, err := w.Authors()
 	if err != nil {
@@ -108,7 +115,8 @@ func TestWork_Editions(t *testing.T) {
 	name := "Test Editions of inexistent work"
 	t.Run(name, func(t *testing.T) {
 		t.Parallel()
-		_, err := gol.GetWork("notAndId")
+		naw, _ := gol.GetWork("notAndId")
+		_, err := naw.Editions()
 		if err == nil {
 			t.Fatalf("%s, should return error; got %v", name, err)
 		}

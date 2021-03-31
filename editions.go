@@ -93,3 +93,17 @@ func GetEdition(olid string) (b Book, err error) {
 	}
 	return
 }
+
+// KeyAuthors returns array of all authors keys
+func (b Book) KeyAuthors() []string {
+	a := make([]string, len(b.AuthorsKey))
+	for i, AuthorKey := range b.AuthorsKey {
+		a[i] = AuthorKey.Key[9:]
+	}
+	return a
+}
+
+// Authors returns all the information related to the book's authors
+func (b Book) Authors() (a []Author, err error) {
+	return Authors(b)
+}
