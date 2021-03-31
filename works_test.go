@@ -80,7 +80,7 @@ func TestWorkKeyAuthors(t *testing.T) {
 	}
 }
 
-func TestAuthors(t *testing.T) {
+func TestWorkAuthors(t *testing.T) {
 	tr, err := w.Authors()
 	if err != nil {
 		t.Errorf("w.Authors() returned an error, %v expecting an Author slice", err)
