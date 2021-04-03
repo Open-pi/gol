@@ -95,6 +95,23 @@ func GetEdition(olid string) (b Book, err error) {
 	return
 }
 
+// GetEditionISBN returns a book from its isbnid
+func GetEditionISBN(isbnid string) (b Book, err error) {
+	s := fmt.Sprintf("https://openlibrary.org/isbn/%s.json", isbnid)
+	resp, err := http.Get(s)
+	if err != nil {
+		return b, err
+	}
+
+	defer resp.Body.Close()
+	bodyBytes, _ := ioutil.ReadAll(resp.Body)
+	json.Unmarshal(bodyBytes, &b)
+	if b.Error == "notfound" {
+		return b, errors.New("Book/Edition not found")
+	}
+	return
+}
+
 // KeyAuthors returns array of all authors keys
 func (b Book) KeyAuthors() []string {
 	a := make([]string, len(b.AuthorsKey))

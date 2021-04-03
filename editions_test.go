@@ -53,6 +53,18 @@ func TestGetEdition(t *testing.T) {
 	}
 }
 
+func TestGetEditionISBN(t *testing.T) {
+	tr, err := gol.GetEditionISBN("0195200004")
+	if !cmp.Equal(b, tr) || err != nil {
+		t.Error("Incorrect testresult GetEditionISBN(0195200004)")
+	}
+
+	tr, err = gol.GetEditionISBN("9984s")
+	if err == nil {
+		t.Error("GetEditionISBN did not return an err when calling an inexistent book")
+	}
+}
+
 func TestEditionKeyAuthors(t *testing.T) {
 	a := b.KeyAuthors()
 	if !cmp.Equal(a, []string{"OL236174A"}) {
