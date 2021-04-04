@@ -13,6 +13,7 @@ These are the API functions (WorkAPI, EditionAPI, etc) to get the data. With the
 |---|---|--|
 | GetWork   | WorkId | (w Work, err error)  |
 | GetEdition   | OLID | (b Book, err error)  |
+| GetEditionISBN   | ISBN | (b Book, err error)  |
 | GetCoverURL   | coverType, identifierType, identifier, size | string  |
 | GetBookCoverURL   | identifierType, identifier, size | string  |
 | GetAuthorCoverURL   | identifierType, identifier, size | string  |

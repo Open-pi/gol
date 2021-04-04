@@ -5,7 +5,7 @@ Here you can find all the information on how to get Books and what methods the `
 In these examples you will find the most useful methods/function, for more low level on Book structs you can look at the documentation.
 
 ```go
-    book := gol.GetEdition("OL4554174M")
+    book := gol.GetEdition("OL4554174M") // Get the edition using the openlibrary ID
     // Output:
     // gol.Book{
     //  Publishers:        []string{"Oxford University Press"},
@@ -27,6 +27,12 @@ In these examples you will find the most useful methods/function, for more low l
     //  ...
     //	Created:           gol.Time{Type: "/type/datetime", Value: "2008-04-01T03:28:50.625462"},
     //	LastModified:      gol.Time{Type: "/type/datetime", Value: "2021-03-03T05:21:06.382367"},
+    // }
+    
+    book := gol.GetEditionISBN("978-3-16-148410-0") // Get the edition from the ISBN key
+    // Output:
+    // gol.Book{
+    // ...
     // }
     
     // Returns all the information of the book's authors
