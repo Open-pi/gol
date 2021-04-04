@@ -7,6 +7,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"strconv"
+	"strings"
 )
 
 // Book holds all the information returned from the EditionAPI
@@ -36,6 +37,7 @@ type Book struct {
 	Languages         []Language  `json:"languages"`
 	Lccn              []string    `json:"lccn"`
 	Isbn10            []string    `json:"isbn_10"`
+	Isbn13            []string    `json:"isbn_13"`
 	PublishDate       string      `json:"publish_date"`
 	PublishCountry    string      `json:"publish_country"`
 	ByStatement       string      `json:"by_statement"`
@@ -97,8 +99,17 @@ func GetEdition(olid string) (b Book, err error) {
 
 // GetEditionISBN returns a book from its isbnid
 func GetEditionISBN(isbnid string) (b Book, err error) {
+	isbnid = strings.ReplaceAll(isbnid, "-", "")
+	if len(isbnid) != 10 && len(isbnid) != 13 {
+		return b, errors.New("incorrect ISBN ID length, must be 10 or 13")
+	} else if len(isbnid) == 13 && isbnid[:3] != "978" {
+		return b, errors.New("incorrect ISBN-13 ID prefix, must be 978")
+	}
 	s := fmt.Sprintf("https://openlibrary.org/isbn/%s.json", isbnid)
 	resp, err := http.Get(s)
+	if resp.StatusCode == 404 {
+		return b, errors.New("ISBN not found")
+	}
 	if err != nil {
 		return b, err
 	}

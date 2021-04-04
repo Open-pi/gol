@@ -54,15 +54,40 @@ func TestGetEdition(t *testing.T) {
 }
 
 func TestGetEditionISBN(t *testing.T) {
-	tr, err := gol.GetEditionISBN("0195200004")
-	if !cmp.Equal(b, tr) || err != nil {
-		t.Error("Incorrect testresult GetEditionISBN(0195200004)")
-	}
-
-	tr, err = gol.GetEditionISBN("9984s")
-	if err == nil {
-		t.Error("GetEditionISBN did not return an err when calling an inexistent book")
-	}
+	t.Run("Correct ISBN-10 ID prefix", func(t *testing.T) {
+		tr, err := gol.GetEditionISBN("0195200004")
+		if !cmp.Equal(b, tr) || err != nil {
+			t.Error("Incorrect testresult GetEditionISBN(0195200004)")
+		}
+	})
+	t.Run("Correct ISBN-13 ID prefix", func(t *testing.T) {
+		tr, err := gol.GetEditionISBN("9780140328721")
+		if !cmp.Equal(b13, tr) || err != nil {
+			t.Error("Incorrect testresult GetEditionISBN(9780140328721)")
+		}
+		tr, err = gol.GetEditionISBN("978-0-14-032872-1")
+		if !cmp.Equal(b13, tr) || err != nil {
+			t.Error("Incorrect testresult GetEditionISBN(978-3-16-148410-0)")
+		}
+	})
+	t.Run("Incorrect ISBN ID length", func(t *testing.T) {
+		_, err := gol.GetEditionISBN("9984")
+		if err == nil {
+			t.Error("GetEditionISBN did not return an err when using incorrect ISBN id length")
+		}
+	})
+	t.Run("Incorrect ISBN-13 ID prefix", func(t *testing.T) {
+		_, err := gol.GetEditionISBN("9870140328721")
+		if err == nil {
+			t.Error("GetEditionISBN did not return an err when using incorrect ISBN-13 id prefix")
+		}
+	})
+	t.Run("Inexistent ISBN/Book", func(t *testing.T) {
+		_, err := gol.GetEditionISBN("9780140328725")
+		if err == nil {
+			t.Error("GetEditionISBN did not return an err when calling an inexistent ISBN/Book")
+		}
+	})
 }
 
 func TestEditionKeyAuthors(t *testing.T) {
