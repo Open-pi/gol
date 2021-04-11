@@ -18,9 +18,13 @@ These are the API functions (WorkAPI, EditionAPI, etc) to get the data. With the
 | GetBookCoverURL   | identifierType, identifier, size | string  |
 | GetAuthorCoverURL   | identifierType, identifier, size | string  |
 | GetAuthor | Author Id | (a Author)  |
+| GetSubject | string | Subject |
+| GetSubjectDetails | string | Subject |
+| Search | search URL | SearchData |
 
 For more information, browse the `docs` folder where you can find additional about every API and its subsequent methods.
 * [WorkAPI](docs/WorkAPI.md)
 * [BookAPI](docs/BookAPI.md)
 * [CoverAPI](docs/CoverAPI.md)
 * [AuthorAPI](docs/AuthorAPI.md)
+* [SearchAPI](docs/SearchAPI.md)
