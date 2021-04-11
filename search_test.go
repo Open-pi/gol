@@ -8,35 +8,33 @@ import (
 )
 
 func TestSearch(t *testing.T) {
+	t.Parallel()
 	// TODO: Add search by Text, Lists, and Avcanced search
-	t.Run("simple search", func(t *testing.T) {
-		tr, err := gol.Search(gol.Url().All("the selfish gene s").Construct())
-		if !cmp.Equal(searchQ, tr) || err != nil {
-			t.Error("Incorrect testresult Search(the selfish gene s)")
-		}
-	})
-	t.Run("title search", func(t *testing.T) {
-		tr, err := gol.Search(gol.Url().Title("spellslinger 6").Construct())
-		if !cmp.Equal(searchTitle, tr) || err != nil {
-			t.Error("Incorrect testresult Search(title:spellslinger 6)")
-		}
-	})
-	t.Run("author search", func(t *testing.T) {
-		tr, err := gol.Search(gol.Url().Author("Sarah Penner").Construct())
-		if !cmp.Equal(searchAuthor, tr) || err != nil {
-			t.Error("Incorrect testresult Search(author:Sarah Penner)")
-		}
-	})
-	t.Run("subject search", func(t *testing.T) {
-		tr, err := gol.Search(gol.Url().Subject("abcd").Construct())
-		if !cmp.Equal(searchSubject, tr) || err != nil {
-			t.Error("Incorrect testresult Search(subject:abcd)")
-		}
-	})
-	t.Run("mixed search", func(t *testing.T) {
-		tr, err := gol.Search(gol.Url().Author("Richard Dawkins").Title("The Selfish Gene").Subject("evolution").Construct())
-		if !cmp.Equal(searchMixed, tr) || err != nil {
-			t.Error("Incorrect testresult Search(author:Richard Dawkins & title:The Selfish Gene & subject:evolution)")
-		}
-	})
+	tt := []struct {
+		name string
+		input string
+		tr gol.SearchData
+	}{
+		{"Test Simple Search", gol.Url().All("the selfish gene s").Construct(), searchQ},
+		{"Test Title Search", gol.Url().Title("spellslinger 6").Construct(), searchTitle},
+		{"Test Author Search", gol.Url().Author("Sarah Penner").Construct(), searchAuthor},
+		{"Test Subject Search", gol.Url().Subject("abcd").Construct(), searchSubject},
+		{"Test Mixed Search", gol.Url().Author("Richard Dawkins").Title("The Selfish Gene").Subject("evolution").Construct(), searchMixed},
+	}
+
+	for _, tc := range tt {
+		tc := tc // capture range variable
+		t.Run(tc.name, func(t *testing.T) {
+			t.Parallel()
+			tr, err := gol.Search(tc.input)
+
+			if err != nil {
+				t.Fatalf("got unexpected error: %v", err)
+			}
+
+			if !cmp.Equal(tc.tr, tr) {
+				t.Fatalf("Unexpected result for Search()")
+			} 
+		})
+	}
 }

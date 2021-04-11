@@ -40,7 +40,10 @@ var authors []gol.Author = []gol.Author{{
 func TestGetWork(t *testing.T) {
 	// Test GetWork when WorkId is valid
 	tr, err := gol.GetWork("OL45583W")
-	if !cmp.Equal(w, tr) || err != nil {
+	if err != nil {
+		t.Errorf("got unexpected error: %v", err)
+	}
+	if !cmp.Equal(w, tr) {
 		t.Error("Incorrect testresult GetWork(OL45583W)")
 	}
 
