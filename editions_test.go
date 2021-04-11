@@ -59,11 +59,11 @@ func TestGetEdition(t *testing.T) {
 
 func TestGetEditionISBN(t *testing.T) {
 	t.Parallel()
-	
+
 	tt1 := []struct {
-		name string
+		name  string
 		input string
-		tr gol.Book
+		tr    gol.Book
 	}{
 		{"Correct ISBN-10 ID prefix", "0195200004", b},
 		{"Correct ISBN-13 ID prefix", "9780140328721", b13},
@@ -85,7 +85,7 @@ func TestGetEditionISBN(t *testing.T) {
 	}
 
 	tt2 := []struct {
-		name string
+		name  string
 		input string
 	}{
 		{"Incorrect ISBN ID Length", "9984"},
@@ -102,7 +102,7 @@ func TestGetEditionISBN(t *testing.T) {
 				t.Fatalf("GetEditionISBN(%s) did not return an error for incorrect/inexistent ISBN", tc.input)
 			}
 		})
-	} 
+	}
 }
 
 func TestEditionKeyAuthors(t *testing.T) {

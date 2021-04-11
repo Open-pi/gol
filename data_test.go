@@ -1065,6 +1065,7 @@ var sbjDetails = gol.Subject{
 	},
 }
 
+var searchQURL = "https://openlibrary.org/search.json?&q=the+selfish+gene+s"
 var searchQ = gol.SearchData{
 	NumFound: 1,
 	Start:    0,
@@ -1491,6 +1492,7 @@ var searchQ = gol.SearchData{
 	},
 }
 
+var searchTitleURL = "https://openlibrary.org/search.json?&title=spellslinger+6"
 var searchTitle = gol.SearchData{
 	NumFound: 1,
 	Start:    0,
@@ -1550,6 +1552,7 @@ var searchTitle = gol.SearchData{
 	},
 }
 
+var searchAuthorURL = "https://openlibrary.org/search.json?&author=Sarah+Penner"
 var searchAuthor = gol.SearchData{
 	NumFound: 1,
 	Start:    0,
@@ -1641,6 +1644,7 @@ var searchAuthor = gol.SearchData{
 	},
 }
 
+var searchSubjectURL = "https://openlibrary.org/search.json?&subject=abcd"
 var searchSubject = gol.SearchData{
 	NumFound: 3,
 	Start:    0,
@@ -1904,6 +1908,7 @@ var searchSubject = gol.SearchData{
 	},
 }
 
+var searchMixedURL = "https://openlibrary.org/search.json?&title=The+Selfish+Gene&author=Richard+Dawkins&subject=evolution"
 var searchMixed = gol.SearchData{
 	NumFound: 3,
 	Start:    0,

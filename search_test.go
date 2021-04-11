@@ -11,16 +11,15 @@ func TestSearch(t *testing.T) {
 	t.Parallel()
 	// TODO: Add search by Text, Lists, and Avcanced search
 	tt := []struct {
-		name string
+		name  string
 		input string
-		tr gol.SearchData
+		tr    gol.SearchData
 	}{
 		{"Test Simple Search", gol.Url().All("the selfish gene s").Construct(), searchQ},
 		{"Test Title Search", gol.Url().Title("spellslinger 6").Construct(), searchTitle},
 		{"Test Author Search", gol.Url().Author("Sarah Penner").Construct(), searchAuthor},
 		{"Test Subject Search", gol.Url().Subject("abcd").Construct(), searchSubject},
-		{"Test Mixed Search", gol.Url().Author("Richard Dawkins").Title("The Selfish Gene").Subject("evolution").Construct(), searchMixed},
-	}
+		{"Test Mixed Search", gol.Url().Author("Richard Dawkins").Title("The Selfish Gene").Subject("evolution").Construct(), searchMixed}}
 
 	for _, tc := range tt {
 		tc := tc // capture range variable
@@ -34,7 +33,34 @@ func TestSearch(t *testing.T) {
 
 			if !cmp.Equal(tc.tr, tr) {
 				t.Fatalf("Unexpected result for Search()")
-			} 
+			}
 		})
+	}
+}
+
+func TestSearchURL(t *testing.T) {
+	tr := gol.Url().All("the selfish gene s").Construct()
+	if tr != searchQURL {
+		t.Errorf("Incorrect URL construction of Search query")
+	}
+
+	tr = gol.Url().Title("spellslinger 6").Construct()
+	if tr != searchTitleURL {
+		t.Errorf("Incorrect URL construction of Search query")
+	}
+
+	tr = gol.Url().Author("Sarah Penner").Construct()
+	if tr != searchAuthorURL {
+		t.Errorf("Incorrect URL construction of Search query")
+	}
+
+	tr = gol.Url().Subject("abcd").Construct()
+	if tr != searchSubjectURL {
+		t.Errorf("Incorrect URL construction of Search query")
+	}
+
+	tr = gol.Url().Author("Richard Dawkins").Title("The Selfish Gene").Subject("evolution").Construct()
+	if tr != searchMixedURL {
+		t.Errorf("Incorrect URL construction of Search query")
 	}
 }
