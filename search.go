@@ -108,7 +108,7 @@ func Search(s string) (sd SearchData, err error) {
 }
 
 // Url returns OpenLibrary's search url
-func Url() SearchURL {
+func SearchUrl() SearchURL {
 	return SearchURL{url: "https://openlibrary.org/search.json?"}
 }
 

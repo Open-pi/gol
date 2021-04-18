@@ -15,11 +15,11 @@ func TestSearch(t *testing.T) {
 		input string
 		tr    gol.SearchData
 	}{
-		{"Test Simple Search", gol.Url().All("the selfish gene s").Construct(), searchQ},
-		{"Test Title Search", gol.Url().Title("spellslinger 6").Construct(), searchTitle},
-		{"Test Author Search", gol.Url().Author("Sarah Penner").Construct(), searchAuthor},
-		{"Test Subject Search", gol.Url().Subject("abcd").Construct(), searchSubject},
-		{"Test Mixed Search", gol.Url().Author("Richard Dawkins").Title("The Selfish Gene").Subject("evolution").Construct(), searchMixed}}
+		{"Test Simple Search", gol.SearchUrl().All("the selfish gene s").Construct(), searchQ},
+		{"Test Title Search", gol.SearchUrl().Title("spellslinger 6").Construct(), searchTitle},
+		{"Test Author Search", gol.SearchUrl().Author("Sarah Penner").Construct(), searchAuthor},
+		{"Test Subject Search", gol.SearchUrl().Subject("abcd").Construct(), searchSubject},
+		{"Test Mixed Search", gol.SearchUrl().Author("Richard Dawkins").Title("The Selfish Gene").Subject("evolution").Construct(), searchMixed}}
 
 	for _, tc := range tt {
 		tc := tc // capture range variable
@@ -39,27 +39,27 @@ func TestSearch(t *testing.T) {
 }
 
 func TestSearchURL(t *testing.T) {
-	tr := gol.Url().All("the selfish gene s").Construct()
+	tr := gol.SearchUrl().All("the selfish gene s").Construct()
 	if tr != searchQURL {
 		t.Errorf("Incorrect URL construction of Search query")
 	}
 
-	tr = gol.Url().Title("spellslinger 6").Construct()
+	tr = gol.SearchUrl().Title("spellslinger 6").Construct()
 	if tr != searchTitleURL {
 		t.Errorf("Incorrect URL construction of Search query")
 	}
 
-	tr = gol.Url().Author("Sarah Penner").Construct()
+	tr = gol.SearchUrl().Author("Sarah Penner").Construct()
 	if tr != searchAuthorURL {
 		t.Errorf("Incorrect URL construction of Search query")
 	}
 
-	tr = gol.Url().Subject("abcd").Construct()
+	tr = gol.SearchUrl().Subject("abcd").Construct()
 	if tr != searchSubjectURL {
 		t.Errorf("Incorrect URL construction of Search query")
 	}
 
-	tr = gol.Url().Author("Richard Dawkins").Title("The Selfish Gene").Subject("evolution").Construct()
+	tr = gol.SearchUrl().Author("Richard Dawkins").Title("The Selfish Gene").Subject("evolution").Construct()
 	if tr != searchMixedURL {
 		t.Errorf("Incorrect URL construction of Search query")
 	}
