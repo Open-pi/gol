@@ -577,8 +577,8 @@ var sbj = gol.Subject{
 			Availability: gol.SubjectWorkAvailability{
 				Status:              "borrow_available",
 				AvailableToBrowse:   true,
-				AvailableToBorrow:   false,
-				AvailableToWaitlist: true,
+				AvailableToBorrow:   true,
+				AvailableToWaitlist: false,
 				IsPrintdisabled:     true,
 				IsReadable:          false,
 				IsLendable:          true,
@@ -724,8 +724,8 @@ var sbjDetails = gol.Subject{
 			Availability: gol.SubjectWorkAvailability{
 				Status:              "borrow_available",
 				AvailableToBrowse:   true,
-				AvailableToBorrow:   false,
-				AvailableToWaitlist: true,
+				AvailableToBorrow:   true,
+				AvailableToWaitlist: false,
 				IsPrintdisabled:     true,
 				IsReadable:          false,
 				IsLendable:          true,

@@ -26,7 +26,7 @@ func TestGetSubjectDetails(t *testing.T) {
 		t.Errorf("got unexpected error: %v", err)
 	}
 
-	if !cmp.Equal(sbjDetails, tr) || err != nil {
+	if !cmp.Equal(sbjDetails, tr) {
 		t.Error("Incorrect testresult GetSubjectDetails(fake)")
 	}
 }
