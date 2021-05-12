@@ -4,10 +4,20 @@ import (
 	"testing"
 
 	"github.com/Open-pi/gol"
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestQuery(t *testing.T) {
-	// TODO: Implement this test
+	url := gol.QueryUrl().Type("edition").Author("OL236174A").Limit(2).Construct()
+	tr, err := gol.Query(url)
+
+	if err != nil {
+		t.Errorf("got unexpected error %v", err)
+	}
+
+	if !cmp.Equal(tr, query) {
+		t.Errorf("incorrent result")
+	}
 }
 
 func TestQueryURL(t *testing.T) {

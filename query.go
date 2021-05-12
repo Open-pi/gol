@@ -57,7 +57,7 @@ func (q QueryURL) Title(t string) QueryURL {
 }
 
 // Query returns the result of the query from a url -- Constructed by Construct()
-func Query(url string) (result map[string]interface{}, err error) {
+func Query(url string) (result []map[string]interface{}, err error) {
 	resp, err := http.Get(url)
 	if err != nil {
 		return result, err
