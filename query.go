@@ -1,9 +1,9 @@
 package gol
 
 import (
+	"encoding/json"
 	"fmt"
 	"io/ioutil"
-	"encoding/json"
 	"net/http"
 )
 
@@ -65,7 +65,7 @@ func Query(url string) (result map[string]interface{}, err error) {
 
 	defer resp.Body.Close()
 	bodyBytes, _ := ioutil.ReadAll(resp.Body)
-	
+
 	json.Unmarshal(bodyBytes, &result)
 	return
 }

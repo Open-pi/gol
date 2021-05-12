@@ -6,21 +6,20 @@ import (
 	"github.com/Open-pi/gol"
 )
 
-//func TestQuery(t *testing.T) {
-	//t.Parallel()
-
-//}
+func TestQuery(t *testing.T) {
+	// TODO: Implement this test
+}
 
 func TestQueryURL(t *testing.T) {
 	tt := []struct {
-		name string
+		name     string
 		expected string
-		output string
+		output   string
 	}{
 		{"query editions by author with limit", gol.QueryUrl().Type("edition").Author("OL236174A").Limit(2).Construct(), "https://openlibrary.org/query.json?&type=/type/edition&authors=/authors/OL236174A&limit=2"},
 		{"query editions by author and get title", gol.QueryUrl().Type("edition").Author("OL236174A").Title("").Construct(), "https://openlibrary.org/query.json?&type=/type/edition&authors=/authors/OL236174A&title="},
 	}
-	
+
 	for _, tc := range tt {
 		t.Run(tc.name, func(t *testing.T) {
 			if tc.expected != tc.output {
