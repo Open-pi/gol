@@ -2495,3 +2495,8 @@ var searchMixed = gol.SearchData{
 		},
 	},
 }
+
+var query []map[string]interface{} = []map[string]interface{}{
+	{"key": "/books/OL32102238M"},
+	{"key": "/books/OL28278128M"},
+}
