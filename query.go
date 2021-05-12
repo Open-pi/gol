@@ -2,6 +2,8 @@ package gol
 
 import (
 	"fmt"
+	"encoding/json"
+	"net/http"
 )
 
 type QueryURL struct {
@@ -44,4 +46,18 @@ func (q QueryURL) Limit(l int) QueryURL {
 func (q QueryURL) Work(w string) QueryURL {
 	q.work = fmt.Sprintf("&works=/works/%s", w)
 	return q
+}
+
+// Query returns the result of the query from a url -- Constructed by Construct()
+func Query(url string) (result map[string]interface{}, err error) {
+	resp, err := http.Get(s)
+	if err != nil {
+		return result, err
+	}
+
+	defer resp.Body.Close()
+	bodyBytes, _ := ioutil.ReadAll(resp.Body)
+	
+	json.Unmarshal(bodyBytes, &result)
+	return
 }
