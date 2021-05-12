@@ -2,6 +2,7 @@ package gol
 
 import (
 	"fmt"
+	"io/ioutil"
 	"encoding/json"
 	"net/http"
 )
@@ -12,6 +13,7 @@ type QueryURL struct {
 	author    string
 	limit     string
 	work      string
+	title     string
 }
 
 // QueryURL returns QueryURL type that holds OpenLibrary Query URL
@@ -21,7 +23,7 @@ func QueryUrl() QueryURL {
 
 // Construct returns the string represtation of the QueryURL
 func (q QueryURL) Construct() string {
-	return fmt.Sprintf("%s%s%s%s%s", q.url, q.querytype, q.author, q.limit, q.work)
+	return fmt.Sprintf("%s%s%s%s%s%s", q.url, q.querytype, q.author, q.limit, q.work, q.title)
 }
 
 // Type returns a QueryURL with the type that has be passed as an arg
@@ -48,9 +50,15 @@ func (q QueryURL) Work(w string) QueryURL {
 	return q
 }
 
+// Title sets the title key of the query
+func (q QueryURL) Title(t string) QueryURL {
+	q.title = fmt.Sprintf("&title=%s", t)
+	return q
+}
+
 // Query returns the result of the query from a url -- Constructed by Construct()
 func Query(url string) (result map[string]interface{}, err error) {
-	resp, err := http.Get(s)
+	resp, err := http.Get(url)
 	if err != nil {
 		return result, err
 	}
