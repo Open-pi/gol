@@ -29,4 +29,3 @@ For more information, browse the `docs` folder where you can find additional abo
 * [CoverAPI](docs/CoverAPI.md)
 * [AuthorAPI](docs/AuthorAPI.md)
 * [SearchAPI](docs/SearchAPI.md)
-* [QueryAPI](docs/QueryAPI.md)
