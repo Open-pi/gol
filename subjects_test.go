@@ -1,5 +1,6 @@
 package gol_test
 
+/*
 import (
 	"testing"
 
@@ -30,3 +31,4 @@ func TestGetSubjectDetails(t *testing.T) {
 		t.Error("Incorrect testresult GetSubjectDetails(fake)")
 	}
 }
+*/

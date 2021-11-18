@@ -1,5 +1,6 @@
 package gol
 
+/*
 import (
 	"encoding/json"
 	"errors"
@@ -98,3 +99,4 @@ func (w *Work) Editions() ([]Book, error) {
 
 	return editions.Entries, err
 }
+*/

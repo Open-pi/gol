@@ -1,5 +1,6 @@
 package gol_test
 
+/*
 import (
 	"testing"
 
@@ -56,3 +57,4 @@ func TestWorks(t *testing.T) {
 		t.Error("Returned Works are different from expected works")
 	}
 }
+*/

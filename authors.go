@@ -1,5 +1,6 @@
 package gol
 
+/*
 import (
 	"encoding/json"
 	"errors"
@@ -113,3 +114,4 @@ func (a Author) KeyCover() string {
 func (a Author) Cover(size string) string {
 	return Cover(a, size)
 }
+*/

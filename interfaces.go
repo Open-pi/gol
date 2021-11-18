@@ -1,5 +1,6 @@
 package gol
 
+/*
 type IKeyAuthors interface {
 	KeyAuthors() []string
 }
@@ -25,3 +26,4 @@ func Cover(c Coverer, size string) string {
 	}
 	return ""
 }
+*/
