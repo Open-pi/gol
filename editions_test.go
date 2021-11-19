@@ -55,10 +55,9 @@ func TestEditionKeyAuthors(t *testing.T) {
 			t.Fatalf("KeyAuthors() did not return an error for non existing book")
 		}
 	})
+}
 
-	//if !cmp.Equal(a, []string{"OL236174A"}) {
-	//	t.Errorf("Unexpected returned array. Expecting [OL18295A] got %v", a)
-	//}
+func TestKeyCovers(t *testing.T) {
 }
 
 /*

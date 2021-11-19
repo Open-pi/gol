@@ -13,6 +13,7 @@ import (
 type Book struct {
 	Container
 	keyAuthors []string
+	keyCovers  []string
 }
 
 // GetEdition returns a book from its open library id
@@ -98,17 +99,30 @@ func (b *Book) KeyAuthors() (keys []string, err error) {
 //return Authors(b)
 //}
 
-/*
 // KeyCover returns (if it exists) the ID of the work's cover
-func (b Book) KeyCover() string {
-	if len(b.Covers) > 0 {
-		return strconv.Itoa(b.Covers[0])
+func (b Book) KeyCovers() ([]string, error) {
+	if len(b.keyCovers) > 0 {
+		return b.keyCovers, nil
 	}
-	return ""
+
+	for _, child := range b.S("covers").Children() {
+		b.keyCovers = append(b.keyCovers, child.Data().(string))
+	}
+	if len(b.keyCovers) == 0 {
+		return b.keyCovers, fmt.Errorf("Could not find key covers")
+	}
+	return b.keyCovers, nil
+}
+
+func (b Book) FirstCoverKey() string {
+	if keys, ok := b.KeyCovers(); ok == nil {
+		return keys[0]
+	} else {
+		return ""
+	}
 }
 
 // Cover returns (if it exists) the URL of the Book's Cover
-func (b Book) Cover(size string) string {
+func (b Book) FirstURLCover(size string) string {
 	return Cover(b, size)
 }
-*/
