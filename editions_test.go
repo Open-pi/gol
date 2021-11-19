@@ -36,14 +36,32 @@ func TestGetEditionISBN(t *testing.T) {
 		})
 	}
 }
+func TestEditionKeyAuthors(t *testing.T) {
+	t.Parallel()
+	t.Run("Existing Author", func(t *testing.T) {
+		t.Parallel()
+		b, _ := gol.GetEdition("OL4554174M")
+		ok := b.KeyAuthors()
+		if ok != nil {
+			t.Fatalf("KeyAuthors() did not return authors for an existing book")
+		}
+	})
 
-//func TestEditionKeyAuthors(t *testing.T) {
-//a := b.KeyAuthors()
-//if !cmp.Equal(a, []string{"OL236174A"}) {
-//t.Errorf("Unexpected returned array. Expecting [OL18295A] got %v", a)
-//}
-//}
+	t.Run("Non-Existing Author", func(t *testing.T) {
+		t.Parallel()
+		b, _ := gol.GetEdition("OL0000000M")
+		ok := b.KeyAuthors()
+		if ok == nil {
+			t.Fatalf("KeyAuthors() did not return an error for non existing book")
+		}
+	})
 
+	//if !cmp.Equal(a, []string{"OL236174A"}) {
+	//	t.Errorf("Unexpected returned array. Expecting [OL18295A] got %v", a)
+	//}
+}
+
+/*
 //func TestEditionAuthors(t *testing.T) {
 //tr, err := editions[0].Authors()
 //if err != nil {
@@ -53,3 +71,4 @@ func TestGetEditionISBN(t *testing.T) {
 //t.Errorf("Expected set of authors incorrect")
 //}
 //}
+*/

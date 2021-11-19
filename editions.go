@@ -1,15 +1,19 @@
 package gol
 
 import (
-	"encoding/json"
 	"errors"
 	"fmt"
 	"io/ioutil"
 	"net/http"
 	"strings"
+
+	"github.com/Jeffail/gabs/v2"
 )
 
-type Book map[string]interface{}
+type Book struct {
+	Container
+	Authors []string
+}
 
 // GetEdition returns a book from its open library id
 func GetEdition(olid string) (b Book, err error) {
@@ -21,11 +25,16 @@ func GetEdition(olid string) (b Book, err error) {
 
 	defer resp.Body.Close()
 	bodyBytes, _ := ioutil.ReadAll(resp.Body)
-	json.Unmarshal(bodyBytes, &b)
-
-	if error, ok := b["error"]; ok {
-		return b, fmt.Errorf("GetEdition: Error fetching book; %s", error)
+	b.Container, err = gabs.ParseJSON(bodyBytes)
+	if err != nil {
+		return b, err
 	}
+
+	// verify if an error field is present in the returned data
+	if err := HasError(b.Container); err != nil {
+		return b, err
+	}
+
 	return
 }
 
@@ -50,23 +59,37 @@ func GetEditionISBN(isbnid string) (b Book, err error) {
 
 	defer resp.Body.Close()
 	bodyBytes, _ := ioutil.ReadAll(resp.Body)
-	json.Unmarshal(bodyBytes, &b)
-	if error, ok := b["error"]; ok {
-		return b, fmt.Errorf("Book/Edition not found; %s", error)
+	b.Container, err = gabs.ParseJSON(bodyBytes)
+	if err != nil {
+		return b, err
+	}
+	if err != nil {
+		return b, err
+	}
+
+	// verify if an error field is present in the returned data
+	if err := HasError(b.Container); err != nil {
+		return b, err
+	}
+
+	return
+}
+
+// KeyAuthors returns array of all authors keys
+func (b *Book) KeyAuthors() (err error) {
+	for _, child := range b.S("authors").Children() {
+		for _, v := range child.ChildrenMap() {
+			b.Authors = append(b.Authors, v.Data().(string))
+		}
+	}
+
+	if len(b.Authors) == 0 {
+		return fmt.Errorf("Could not find any authors")
 	}
 	return
 }
 
 /*
-// KeyAuthors returns array of all authors keys
-func (b Book) KeyAuthors() []string {
-	a := make([]string, len(b.AuthorsKey))
-	for i, AuthorKey := range b.AuthorsKey {
-		a[i] = AuthorKey.Key[9:]
-	}
-	return a
-}
-
 // Authors returns all the information related to the book's authors
 func (b Book) Authors() (a []Author, err error) {
 	return Authors(b)
