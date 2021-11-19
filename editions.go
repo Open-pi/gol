@@ -12,7 +12,7 @@ import (
 
 type Book struct {
 	Container
-	Authors []string
+	keyAuthors []string
 }
 
 // GetEdition returns a book from its open library id
@@ -76,25 +76,29 @@ func GetEditionISBN(isbnid string) (b Book, err error) {
 }
 
 // KeyAuthors returns array of all authors keys
-func (b *Book) KeyAuthors() (err error) {
+func (b *Book) KeyAuthors() (keys []string, err error) {
+	if len(b.keyAuthors) > 0 {
+		return b.keyAuthors, err
+	}
 	for _, child := range b.S("authors").Children() {
 		for _, v := range child.ChildrenMap() {
-			b.Authors = append(b.Authors, v.Data().(string))
+			b.keyAuthors = append(b.keyAuthors, v.Data().(string))
 		}
 	}
 
-	if len(b.Authors) == 0 {
-		return fmt.Errorf("Could not find any authors")
+	if len(b.keyAuthors) == 0 {
+		return b.keyAuthors, fmt.Errorf("Could not find any authors")
 	}
 	return
 }
 
-/*
+//TODO: add this after dealing with authors API
 // Authors returns all the information related to the book's authors
-func (b Book) Authors() (a []Author, err error) {
-	return Authors(b)
-}
+//func (b Book) Authors() (a []Author, err error) {
+//return Authors(b)
+//}
 
+/*
 // KeyCover returns (if it exists) the ID of the work's cover
 func (b Book) KeyCover() string {
 	if len(b.Covers) > 0 {

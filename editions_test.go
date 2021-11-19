@@ -41,7 +41,7 @@ func TestEditionKeyAuthors(t *testing.T) {
 	t.Run("Existing Author", func(t *testing.T) {
 		t.Parallel()
 		b, _ := gol.GetEdition("OL4554174M")
-		ok := b.KeyAuthors()
+		_, ok := b.KeyAuthors()
 		if ok != nil {
 			t.Fatalf("KeyAuthors() did not return authors for an existing book")
 		}
@@ -50,7 +50,7 @@ func TestEditionKeyAuthors(t *testing.T) {
 	t.Run("Non-Existing Author", func(t *testing.T) {
 		t.Parallel()
 		b, _ := gol.GetEdition("OL0000000M")
-		ok := b.KeyAuthors()
+		_, ok := b.KeyAuthors()
 		if ok == nil {
 			t.Fatalf("KeyAuthors() did not return an error for non existing book")
 		}
