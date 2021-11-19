@@ -7,6 +7,8 @@ package gol
 
 import (
 	"fmt"
+	"io/ioutil"
+	"net/http"
 
 	"github.com/Jeffail/gabs/v2"
 )
@@ -20,4 +22,37 @@ func HasError(data Container) error {
 		return fmt.Errorf("Error fetching data; %s", err)
 	}
 	return nil
+}
+
+//s := fmt.Sprintf("https://openlibrary.org/authors/%s.json", id)
+//s := fmt.Sprintf("https://openlibrary.org/books/%s.json", olid)
+func MakeRequest(api string, id string) (Container, error) {
+	s := fmt.Sprintf("https://openlibrary.org/%s/%s.json", api, id)
+	resp, err := http.Get(s)
+	if err != nil {
+		return nil, err
+	}
+	if resp.StatusCode == 404 {
+		return nil, fmt.Errorf("404 Error")
+	}
+
+	defer resp.Body.Close()
+	bodyBytes, _ := ioutil.ReadAll(resp.Body)
+	container, err := gabs.ParseJSON(bodyBytes)
+	if err != nil {
+		return nil, err
+	}
+	return container, nil
+}
+
+func MakeBookRequest(id string) (Container, error) {
+	return MakeRequest("books", id)
+}
+
+func MakeAuthorRequest(id string) (Container, error) {
+	return MakeRequest("authors", id)
+}
+
+func MakeISBNRequest(isbn string) (Container, error) {
+	return MakeRequest("isbn", isbn)
 }

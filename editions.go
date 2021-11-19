@@ -3,11 +3,7 @@ package gol
 import (
 	"errors"
 	"fmt"
-	"io/ioutil"
-	"net/http"
 	"strings"
-
-	"github.com/Jeffail/gabs/v2"
 )
 
 type Book struct {
@@ -18,15 +14,7 @@ type Book struct {
 
 // GetEdition returns a book from its open library id
 func GetEdition(olid string) (b Book, err error) {
-	s := fmt.Sprintf("https://openlibrary.org/books/%s.json", olid)
-	resp, err := http.Get(s)
-	if err != nil {
-		return b, err
-	}
-
-	defer resp.Body.Close()
-	bodyBytes, _ := ioutil.ReadAll(resp.Body)
-	b.Container, err = gabs.ParseJSON(bodyBytes)
+	b.Container, err = MakeBookRequest(olid)
 	if err != nil {
 		return b, err
 	}
@@ -49,21 +37,7 @@ func GetEditionISBN(isbnid string) (b Book, err error) {
 		return b, errors.New("incorrect ISBN-13 ID prefix, must be 978")
 	}
 
-	s := fmt.Sprintf("https://openlibrary.org/isbn/%s.json", isbnid)
-	resp, err := http.Get(s)
-	if resp.StatusCode == 404 {
-		return b, errors.New("ISBN not found")
-	}
-	if err != nil {
-		return b, err
-	}
-
-	defer resp.Body.Close()
-	bodyBytes, _ := ioutil.ReadAll(resp.Body)
-	b.Container, err = gabs.ParseJSON(bodyBytes)
-	if err != nil {
-		return b, err
-	}
+	b.Container, err = MakeISBNRequest(isbnid)
 	if err != nil {
 		return b, err
 	}
