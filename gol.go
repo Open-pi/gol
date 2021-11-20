@@ -6,6 +6,8 @@ gol uses the WorkAPI, the EditionAPI, and the CoverAPI
 package gol
 
 import (
+	"bytes"
+	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"net/http"
@@ -38,7 +40,9 @@ func MakeRequest(api string, id string) (Container, error) {
 
 	defer resp.Body.Close()
 	bodyBytes, _ := ioutil.ReadAll(resp.Body)
-	container, err := gabs.ParseJSON(bodyBytes)
+	dec := json.NewDecoder(bytes.NewReader(bodyBytes))
+	dec.UseNumber()
+	container, err := gabs.ParseJSONDecoder(dec)
 	if err != nil {
 		return nil, err
 	}

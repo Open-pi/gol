@@ -1,3 +1,4 @@
+# Depricated! (needs updating)
 # Book/EditionAPI
 Here you can find all the information on how to get Books and what methods the `Book` struct has.
 

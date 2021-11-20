@@ -1,3 +1,4 @@
+# Depricated! (needs updating)
 # SearchAPI
 This section will have all things related to searching and querying the OpenLibrary API.
 

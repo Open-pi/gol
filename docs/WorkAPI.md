@@ -1,3 +1,4 @@
+# Depricated! (needs updating)
 # WorkAPI
 This is the documentation page related to Work pages on Open Library that begin with the URL prefix "/works".
 You will find here all the operations you can do on works through the `Work` struct.

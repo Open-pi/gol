@@ -1,3 +1,4 @@
+# Depricated! (needs updating)
 # AuthorAPI
 The AuthorAPI deals with everything related to Author pages on Open Library that begin with the URL prefix `/authors`.
 

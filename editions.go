@@ -1,6 +1,7 @@
 package gol
 
 import (
+	"encoding/json"
 	"errors"
 	"fmt"
 	"strings"
@@ -80,8 +81,12 @@ func (b Book) KeyCovers() ([]string, error) {
 	}
 
 	for _, child := range b.S("covers").Children() {
-		b.keyCovers = append(b.keyCovers, child.Data().(string))
+		id, err := child.Data().(json.Number).Int64()
+		if err == nil {
+			b.keyCovers = append(b.keyCovers, fmt.Sprintf("%v", id))
+		}
 	}
+
 	if len(b.keyCovers) == 0 {
 		return b.keyCovers, fmt.Errorf("Could not find key covers")
 	}
