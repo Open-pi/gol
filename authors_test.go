@@ -1,7 +1,6 @@
 package gol_test
 
 import (
-	"fmt"
 	"testing"
 
 	"github.com/Open-pi/gol"
@@ -18,7 +17,7 @@ func TestAuthorKeyCovers(t *testing.T) {
 		a, _ := gol.GetAuthor("OL236174A")
 		_, err := a.KeyCovers()
 		if err != nil {
-			fmt.Errorf("Author.KeyCovers() did not return cover keys")
+			t.Fatalf("Author.KeyCovers() did not return cover keys")
 		}
 	})
 
@@ -26,7 +25,7 @@ func TestAuthorKeyCovers(t *testing.T) {
 		a, _ := gol.GetAuthor("OL000000A")
 		_, err := a.KeyCovers()
 		if err == nil {
-			fmt.Errorf("Author.KeyCovers() no error returned for invalid input")
+			t.Fatalf("Author.KeyCovers() no error returned for invalid input")
 		}
 	})
 }

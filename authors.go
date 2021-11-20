@@ -90,9 +90,14 @@ func (a Author) KeyCovers() ([]string, error) {
 	return a.keyCovers, nil
 }
 
-/*
-// Cover returns (if it exists) the URL of the Author's Phote/Cover
+func (a Author) FirstCoverKey() string {
+	if keys, ok := a.KeyCovers(); ok == nil {
+		return keys[0]
+	}
+	return ""
+}
+
+// Cover returns (if it exists) the URL of the first Author's Photo/Cover
 func (a Author) Cover(size string) string {
 	return Cover(a, size)
 }
-*/
