@@ -11,6 +11,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"strings"
 
 	"github.com/Jeffail/gabs/v2"
 )
@@ -46,8 +47,13 @@ func Request(url string) (Container, error) {
 	return container, nil
 }
 
-func MakeRequest(api string, id string) (Container, error) {
-	s := fmt.Sprintf("https://openlibrary.org/%s/%s.json", api, id)
+func MakeRequest(api string, id string, params ...string) (Container, error) {
+	var s string
+	if len(params) == 0 {
+		s = fmt.Sprintf("https://openlibrary.org/%s/%s.json", api, id)
+	} else {
+		s = fmt.Sprintf("https://openlibrary.org/%s/%s.json?%s", api, id, strings.Join(params, "&"))
+	}
 	return Request(s)
 }
 
@@ -61,4 +67,12 @@ func MakeAuthorRequest(id string) (Container, error) {
 
 func MakeISBNRequest(isbn string) (Container, error) {
 	return MakeRequest("isbn", isbn)
+}
+
+func MakeSubjectRequest(subject string) (Container, error) {
+	return MakeRequest("subjects", subject)
+}
+
+func MakeDetailedSubjectRequest(subject string) (Container, error) {
+	return MakeRequest("subjects", subject, "details=true")
 }

@@ -1,102 +1,59 @@
 package gol
 
-import (
-	"encoding/json"
-	"fmt"
-	"io/ioutil"
-	"net/http"
-)
+import "fmt"
 
-// Subject holds all the information about a particular subject
 type Subject struct {
-	Key               string          `json:"key"`
-	Name              string          `json:"name"`
-	SubjectType       string          `json:"subject_type"`
-	WorkCount         int             `json:"work_count"`
-	Works             []SubjectWork   `json:"works"`
-	EbookCount        int             `json:"ebook_count"`
-	Subjects          []SubjectDetail `json:"subjects"`
-	Places            []SubjectDetail `json:"places"`
-	People            []SubjectDetail `json:"people"`
-	Times             []SubjectDetail `json:"times"`
-	Authors           []SubjectDetail `json:"authors"`
-	Publishers        []SubjectDetail `json:"publishers"`
-	Languages         []SubjectDetail `json:"languages"`
-	PublishingHistory [][]int         `json:"publishing_history"`
-	Error             string          `json:"error"`
-}
-
-// SubjectWork holds all the information about works of a particular subject
-type SubjectWork struct {
-	Key               string                  `json:"key"`
-	Title             string                  `json:"title"`
-	EditionCount      int                     `json:"edition_count"`
-	CoverID           int                     `json:"cover_id"`
-	CoverEditionKey   string                  `json:"cover_edition_key"`
-	Subject           []string                `json:"subject"`
-	IaCollection      []string                `json:"ia_collection"`
-	Lendinglibrary    bool                    `json:"lendinglibrary"`
-	Printdisabled     bool                    `json:"printdisabled"`
-	LendingEdition    string                  `json:"lending_edition"`
-	LendingIdentifier string                  `json:"lending_identifier"`
-	Authors           []SubjectDetail         `json:"authors"`
-	FirstPublishYear  interface{}             `json:"first_publish_year"`
-	Ia                string                  `json:"ia"`
-	PublicScan        bool                    `json:"public_scan"`
-	HasFulltext       bool                    `json:"has_fulltext"`
-	CheckedOut        bool                    `json:"checked_out"`
-	Availability      SubjectWorkAvailability `json:"availability"`
-}
-
-// SubjectDetail holds informations about subject details
-type SubjectDetail struct {
-	Key   string `json:"key"`
-	Name  string `json:"name"`
-	Count int    `json:"count"`
-}
-
-// SubjectWorkAvailability holds information about the work of a subject
-type SubjectWorkAvailability struct {
-	Status              string      `json:"status"`
-	AvailableToBrowse   bool        `json:"available_to_browse"`
-	AvailableToBorrow   bool        `json:"available_to_borrow"`
-	AvailableToWaitlist bool        `json:"available_to_waitlist"`
-	IsPrintdisabled     bool        `json:"is_printdisabled"`
-	IsReadable          bool        `json:"is_readable"`
-	IsLendable          bool        `json:"is_lendable"`
-	Identifier          string      `json:"identifier"`
-	Isbn                interface{} `json:"isbn"`
-	Oclc                interface{} `json:"oclc"`
-	OpenlibraryWork     string      `json:"openlibrary_work"`
-	OpenlibraryEdition  string      `json:"openlibrary_edition"`
-	LastLoanDate        interface{} `json:"last_loan_date"`
-	NumWaitlist         interface{} `json:"num_waitlist"`
-	LastWaitlistDate    interface{} `json:"last_waitlist_date"`
-	Collection          string      `json:"collection"`
-	IsRestricted        bool        `json:"is_restricted"`
-	IsBrowseable        bool        `json:"is_browseable"`
-	Src                 string      `json:"__src__"`
+	Container
+	name  string
+	works []Work
 }
 
 // GetSubject returns the chosen subject's information
 func GetSubject(subject string) (sbj Subject, err error) {
-	return GeneralGetSubject(fmt.Sprintf("https://openlibrary.org/subjects/%s.json", subject))
+	return getSubject(subject, false)
 }
 
 // GetSubject returns the chosen subject's information with more details
 func GetSubjectDetails(subject string) (sbj Subject, err error) {
-	return GeneralGetSubject(fmt.Sprintf("https://openlibrary.org/subjects/%s.json?details=true", subject))
+	return getSubject(subject, true)
 }
 
 // GeneralGetSubject is a general function for GetSubject and GetSubjectDetails functions
-func GeneralGetSubject(s string) (sbj Subject, err error) {
-	resp, err := http.Get(s)
+func getSubject(s string, detail bool) (sbj Subject, err error) {
+	if !detail {
+		sbj.Container, err = MakeSubjectRequest(s)
+	} else {
+		sbj.Container, err = MakeDetailedSubjectRequest(s)
+	}
+
 	if err != nil {
 		return sbj, err
 	}
 
-	defer resp.Body.Close()
-	bodyBytes, _ := ioutil.ReadAll(resp.Body)
-	json.Unmarshal(bodyBytes, &sbj)
+	// verify if an error field is present in the returned data
+	if err := HasError(sbj.Container); err != nil {
+		return sbj, err
+	}
+
+	if v, ok := sbj.Path("name").Data().(string); ok {
+		sbj.name = v
+	}
 	return
+}
+
+// Works returns the works related to that subject.
+// Note that the work fields won't get loaded (using the Work.load() method);
+// If the works were loaded before, it will return sbj.works
+func (sbj *Subject) Works() ([]Work, error) {
+	if len(sbj.works) > 0 {
+		return sbj.works, nil
+	}
+
+	for _, child := range sbj.Path("works").Children() {
+		sbj.works = append(sbj.works, Work{Container: child})
+	}
+	if len(sbj.works) == 0 {
+		return sbj.works, fmt.Errorf("Could not find works")
+	}
+	return sbj.works, nil
 }
