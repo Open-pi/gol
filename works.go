@@ -1,33 +1,103 @@
 package gol
 
-/*
 import (
 	"encoding/json"
-	"errors"
 	"fmt"
-	"io/ioutil"
-	"net/http"
-	"strconv"
 )
 
-// Work holds all the information about works coming from openlibrary
 type Work struct {
-	Created          Time               `json:"created"`
-	Subjects         []string           `json:"subjects"`
-	LatestRevision   int                `json:"latest_revision"`
-	Key              string             `json:"key"`
-	Title            string             `json:"title"`
-	Subtitle         string             `json:"subtitle"`
-	FirstPublishDate string             `json:"first_publish_date"`
-	AuthorsKey       []AuthorKeyAndType `json:"authors"`
-	Type             Type               `json:"type"`
-	LastModified     Time               `json:"last_modified"`
-	Covers           []int              `json:"covers"`
-	Revision         int                `json:"revision"`
-	Error            string             `json:"error"`
-	NumberOfEditions int
+	Container
+	subjects   []string
+	key        string
+	title      string
+	desc       string
+	keyAuthors []string
+	keyCovers  []string
 }
 
+// LoadWork parses the json container and fills all the fields
+func (w *Work) Load() {
+	w.Subjects()
+	w.Title()
+	w.Desc()
+	w.KeyAuthors()
+	w.KeyCovers()
+}
+
+func (w *Work) Desc() (string, error) {
+	if w.desc != "" {
+		return w.desc, nil
+	}
+
+	if desc, ok := w.Path("description.value").Data().(string); ok {
+		w.desc = desc
+		return w.desc, nil
+	} else {
+		return "", fmt.Errorf("Description not found")
+	}
+}
+
+func (w *Work) Subjects() ([]string, error) {
+	if len(w.subjects) > 0 {
+		return w.subjects, nil
+	}
+
+	for _, child := range w.S("subjects").Children() {
+		w.subjects = append(w.subjects, child.Data().(string))
+	}
+	if len(w.subjects) == 0 {
+		return nil, fmt.Errorf("subjects not found")
+	}
+
+	return w.subjects, nil
+}
+
+func (w *Work) Title() (string, error) {
+	if w.title != "" {
+		return w.title, nil
+	}
+	if title, ok := w.Path("title").Data().(string); ok {
+		w.title = title
+		return w.title, nil
+	} else {
+		return "", fmt.Errorf("Title not found")
+	}
+}
+
+func (w *Work) KeyAuthors() ([]string, error) {
+	if len(w.keyAuthors) > 0 {
+		return w.keyAuthors, nil
+	}
+	for _, child := range w.S("author").Children() {
+		for _, v := range child.ChildrenMap() {
+			w.keyAuthors = append(w.keyAuthors, v.Data().(string))
+		}
+	}
+	if len(w.keyAuthors) == 0 {
+		return nil, fmt.Errorf("Key Authors not found")
+	}
+
+	return w.keyAuthors, nil
+}
+
+func (w *Work) KeyCovers() ([]string, error) {
+	if len(w.keyCovers) > 0 {
+		return w.keyCovers, nil
+	}
+
+	for _, child := range w.S("covers").Children() {
+		id, err := child.Data().(json.Number).Int64()
+		if err == nil {
+			w.keyCovers = append(w.keyCovers, fmt.Sprintf("%v", id))
+		}
+	}
+	if len(w.keyCovers) == 0 {
+		return nil, fmt.Errorf("Key covers not found")
+	}
+	return w.keyCovers, nil
+}
+
+/*
 // GetWork returns the work from the workID
 func GetWork(id string) (w Work, err error) {
 	s := fmt.Sprintf("https://openlibrary.org/works/%s.json", id)

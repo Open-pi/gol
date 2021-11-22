@@ -26,11 +26,8 @@ func HasError(data Container) error {
 	return nil
 }
 
-//s := fmt.Sprintf("https://openlibrary.org/authors/%s.json", id)
-//s := fmt.Sprintf("https://openlibrary.org/books/%s.json", olid)
-func MakeRequest(api string, id string) (Container, error) {
-	s := fmt.Sprintf("https://openlibrary.org/%s/%s.json", api, id)
-	resp, err := http.Get(s)
+func Request(url string) (Container, error) {
+	resp, err := http.Get(url)
 	if err != nil {
 		return nil, err
 	}
@@ -47,6 +44,11 @@ func MakeRequest(api string, id string) (Container, error) {
 		return nil, err
 	}
 	return container, nil
+}
+
+func MakeRequest(api string, id string) (Container, error) {
+	s := fmt.Sprintf("https://openlibrary.org/%s/%s.json", api, id)
+	return Request(s)
 }
 
 func MakeBookRequest(id string) (Container, error) {

@@ -4,11 +4,13 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"sync"
 )
 
 type Author struct {
 	Container
 	keyCovers []string
+	Key       string
 }
 
 // GetAuthor returns an Author struct
@@ -21,10 +23,10 @@ func GetAuthor(id string) (a Author, err error) {
 	if HasError(a.Container) != nil {
 		return a, errors.New("Author not found")
 	}
+	a.Key = id
 	return
 }
 
-/*
 // works returns all the works of the author
 func (a Author) Works() ([]Work, error) {
 	return a.works("")
@@ -32,44 +34,51 @@ func (a Author) Works() ([]Work, error) {
 
 func (a Author) works(offset string) ([]Work, error) {
 	var s string
-	works := struct {
-		Entries []Work `json:"entries"`
-		Number  int    `json:"size"`
-		Links   struct {
-			Next string `json:"next"`
-		}
-		Error string `json:"error"`
-	}{}
 
 	if offset != "" {
 		s = fmt.Sprintf("https://openlibrary.org%s", offset)
 	} else {
-		s = fmt.Sprintf("https://openlibrary.org%s/works.json", a.Key)
+		s = fmt.Sprintf("https://openlibrary.org/authors/%s/works.json", a.Key)
 	}
 
-	resp, err := http.Get(s)
+	container, err := Request(s)
 	if err != nil {
-		return works.Entries, err
+		return nil, err
 	}
 
-	defer resp.Body.Close()
-	bodyBytes, _ := ioutil.ReadAll(resp.Body)
-	json.Unmarshal(bodyBytes, &works)
-	if works.Error == "notfound" {
-		return works.Entries, fmt.Errorf("Works of  %s not found", a.Key)
+	if HasError(container) != nil {
+		return nil, errors.New("Author not found")
+	}
+
+	entries := []Work{}
+	var wg sync.WaitGroup
+	entriesJSON := container.Path("entries").Children()
+	wg.Add(len(entriesJSON))
+
+	for _, child := range entriesJSON {
+		work := Work{
+			Container: child,
+		}
+		go func(wg *sync.WaitGroup) {
+			work.Load()
+			wg.Done()
+		}(&wg)
+
+		entries = append(entries, work)
 	}
 
 	// Use the next field If there are still another works to request from the API
-	if works.Links.Next != "" {
-		entries, err := a.works(works.Links.Next)
+	if next, ok := container.Path("links.next").Data().(string); ok && next != "" {
+		nextEntries, err := a.works(next)
 		if err != nil {
-			return works.Entries, err
+			return entries, err
 		}
-		works.Entries = append(works.Entries, entries...)
+		entries = append(entries, nextEntries...)
 	}
 
-	return works.Entries, err
-}*/
+	wg.Wait()
+	return entries, err
+}
 
 // KeyCovers returns (if they exists) the key covers/photo of the author
 func (a Author) KeyCovers() ([]string, error) {
