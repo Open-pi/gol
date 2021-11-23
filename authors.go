@@ -10,6 +10,7 @@ import (
 type Author struct {
 	Container
 	keyCovers []string
+	works     []Work
 	Key       string
 }
 
@@ -28,11 +29,19 @@ func GetAuthor(id string) (a Author, err error) {
 }
 
 // works returns all the works of the author
-func (a Author) Works() ([]Work, error) {
-	return a.works("")
+func (a *Author) Works() ([]Work, error) {
+	if len(a.works) > 0 {
+		return a.works, nil
+	}
+	ws, err := a._Works("")
+	if err != nil {
+		return nil, err
+	}
+	a.works = ws
+	return ws, err
 }
 
-func (a Author) works(offset string) ([]Work, error) {
+func (a Author) _Works(offset string) ([]Work, error) {
 	var s string
 
 	if offset != "" {
@@ -69,7 +78,7 @@ func (a Author) works(offset string) ([]Work, error) {
 
 	// Use the next field If there are still another works to request from the API
 	if next, ok := container.Path("links.next").Data().(string); ok && next != "" {
-		nextEntries, err := a.works(next)
+		nextEntries, err := a._Works(next)
 		if err != nil {
 			return entries, err
 		}
