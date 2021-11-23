@@ -1,25 +1,22 @@
 package gol_test
 
 import (
-	"fmt"
 	"testing"
-
-	"github.com/Open-pi/gol"
 )
 
 func TestGetWork(t *testing.T) {
 }
 
 func TestWorkAuthors(t *testing.T) {
-	w, err := gol.GetWork("OL45583W")
-	if err != nil {
-		fmt.Println(err)
-	}
-	as, err := w.Authors()
-	if err != nil {
-		fmt.Println(err)
-	}
-	fmt.Println(as)
+	//w, err := gol.GetWork("OL45583W")
+	//if err != nil {
+	//fmt.Println(err)
+	//}
+	//as, err := w.Authors()
+	//if err != nil {
+	//fmt.Println(err)
+	//}
+	//fmt.Println(as)
 }
 
 /*
