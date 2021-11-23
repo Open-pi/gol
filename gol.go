@@ -76,3 +76,7 @@ func MakeSubjectRequest(subject string) (Container, error) {
 func MakeDetailedSubjectRequest(subject string) (Container, error) {
 	return MakeRequest("subjects", subject, "details=true")
 }
+
+func MakeWorkRequest(work string) (Container, error) {
+	return MakeRequest("works", work)
+}

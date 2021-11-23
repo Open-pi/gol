@@ -97,24 +97,22 @@ func (w *Work) KeyCovers() ([]string, error) {
 	return w.keyCovers, nil
 }
 
-/*
 // GetWork returns the work from the workID
+// After making the request, the fields are loaded with Load
 func GetWork(id string) (w Work, err error) {
-	s := fmt.Sprintf("https://openlibrary.org/works/%s.json", id)
-	resp, err := http.Get(s)
+	w.Container, err = MakeWorkRequest(id)
 	if err != nil {
 		return w, err
 	}
-
-	defer resp.Body.Close()
-	bodyBytes, _ := ioutil.ReadAll(resp.Body)
-	json.Unmarshal(bodyBytes, &w)
-	if w.Error == "notfound" {
-		return w, errors.New("Work not found")
+	if err := HasError(w.Container); err != nil {
+		return w, err
 	}
+	w.Load()
+
 	return
 }
 
+/*
 // KeyCover returns (if it exists) the ID of the work's cover
 func (w Work) KeyCover() string {
 	if len(w.Covers) > 0 {

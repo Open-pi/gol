@@ -6,6 +6,7 @@ gol (**G**olang **O**pen **L**ibrary) is an interface for the OpenLibrary API. F
 [![Go Reference](https://pkg.go.dev/badge/github.com/Open-pi/gol.svg)](https://pkg.go.dev/github.com/Open-pi/gol)
 ![go](https://github.com/Open-pi/gol/actions/workflows/go.yml/badge.svg)
 
+As OpenLibrary's data is always changing, under the hood all the JSON data is handled through `gabs`. Subsequently if a field is not accessible with a method, `gabs`'s container can be used instead for any `struct`.
 ## Functions
 These are the API functions (WorkAPI, EditionAPI, etc) to get the data. With them you can make other calls.
 
