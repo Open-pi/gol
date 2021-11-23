@@ -1,27 +1,27 @@
 package gol
 
-/*
 type IKeyAuthors interface {
-	KeyAuthors() []string
+	KeyAuthors() ([]string, error)
 }
-*/
 
 type HasCovers interface {
 	FirstCoverKey() string
 }
 
-/*
-func Authors(i IKeyAuthors) (a []Author, err error) {
-	for _, key := range i.KeyAuthors() {
-		author, err := GetAuthor(key)
+func Authors(i IKeyAuthors) (as []Author, err error) {
+	keys, err := i.KeyAuthors()
+	if err != nil {
+		return nil, err
+	}
+	for _, key := range keys {
+		author, err := GetAuthor(key[9:])
 		if err != nil {
-			return a, err
+			continue
 		}
-		a = append(a, author)
+		as = append(as, author)
 	}
 	return
 }
-*/
 
 func Cover(c HasCovers, size string) string {
 	if id := c.FirstCoverKey(); id != "" {

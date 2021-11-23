@@ -83,8 +83,8 @@ func (w *Work) KeyAuthors() ([]string, error) {
 	if len(w.keyAuthors) > 0 {
 		return w.keyAuthors, nil
 	}
-	for _, child := range w.S("author").Children() {
-		for _, v := range child.ChildrenMap() {
+	for _, child := range w.Path("authors").Children() {
+		for _, v := range child.S("author").ChildrenMap() {
 			w.keyAuthors = append(w.keyAuthors, v.Data().(string))
 		}
 	}
@@ -127,12 +127,12 @@ func (w Work) Cover(size string) string {
 	return Cover(w, size)
 }
 
-/*
 // Authors returns more information about the authors (using AuthorsKey)
 func (w Work) Authors() (a []Author, err error) {
-	return Authors(w)
+	return Authors(&w)
 }
 
+/*
 // Editions returns an array of books linked to the work
 func (w *Work) Editions() ([]Book, error) {
 	editions := struct {
