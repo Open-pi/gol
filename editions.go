@@ -75,7 +75,7 @@ func (b *Book) KeyAuthors() (keys []string, err error) {
 //}
 
 // KeyCover returns (if it exists) the ID of the work's cover
-func (b Book) KeyCovers() ([]string, error) {
+func (b *Book) KeyCovers() ([]string, error) {
 	if len(b.keyCovers) > 0 {
 		return b.keyCovers, nil
 	}
@@ -93,6 +93,7 @@ func (b Book) KeyCovers() ([]string, error) {
 	return b.keyCovers, nil
 }
 
+// FirstCoverKey returns the first cover if it exists
 func (b Book) FirstCoverKey() string {
 	if keys, ok := b.KeyCovers(); ok == nil {
 		return keys[0]

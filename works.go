@@ -15,6 +15,21 @@ type Work struct {
 	keyCovers  []string
 }
 
+// GetWork returns the work from the workID
+// After making the request, the fields are loaded with Load
+func GetWork(id string) (w Work, err error) {
+	w.Container, err = MakeWorkRequest(id)
+	if err != nil {
+		return w, err
+	}
+	if err := HasError(w.Container); err != nil {
+		return w, err
+	}
+	w.Load()
+
+	return
+}
+
 // LoadWork parses the json container and fills all the fields
 func (w *Work) Load() {
 	w.Subjects()
@@ -97,28 +112,13 @@ func (w *Work) KeyCovers() ([]string, error) {
 	return w.keyCovers, nil
 }
 
-// GetWork returns the work from the workID
-// After making the request, the fields are loaded with Load
-func GetWork(id string) (w Work, err error) {
-	w.Container, err = MakeWorkRequest(id)
-	if err != nil {
-		return w, err
+// FirstCoverKey return the first cover key (if it exists)
+func (w Work) FirstCoverKey() string {
+	if keys, ok := w.KeyCovers(); ok == nil {
+		return keys[0]
+	} else {
+		return ""
 	}
-	if err := HasError(w.Container); err != nil {
-		return w, err
-	}
-	w.Load()
-
-	return
-}
-
-/*
-// KeyCover returns (if it exists) the ID of the work's cover
-func (w Work) KeyCover() string {
-	if len(w.Covers) > 0 {
-		return strconv.Itoa(w.Covers[0])
-	}
-	return ""
 }
 
 // Cover returns the cover url to the "first" edition.
@@ -127,15 +127,7 @@ func (w Work) Cover(size string) string {
 	return Cover(w, size)
 }
 
-// KeyAuthors returns array of all authors keys
-func (w Work) KeyAuthors() []string {
-	a := make([]string, len(w.AuthorsKey))
-	for i, AuthorKey := range w.AuthorsKey {
-		a[i] = AuthorKey.AuthorKey.Key[9:]
-	}
-	return a
-}
-
+/*
 // Authors returns more information about the authors (using AuthorsKey)
 func (w Work) Authors() (a []Author, err error) {
 	return Authors(w)

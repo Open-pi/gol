@@ -90,7 +90,7 @@ func (a Author) _Works(offset string) ([]Work, error) {
 }
 
 // KeyCovers returns (if they exists) the key covers/photo of the author
-func (a Author) KeyCovers() ([]string, error) {
+func (a *Author) KeyCovers() ([]string, error) {
 	if len(a.keyCovers) > 0 {
 		return a.keyCovers, nil
 	}

@@ -7,7 +7,6 @@ type IKeyAuthors interface {
 */
 
 type HasCovers interface {
-	KeyCovers() ([]string, error)
 	FirstCoverKey() string
 }
 
