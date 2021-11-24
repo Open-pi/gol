@@ -19,7 +19,6 @@ import (
 type Container = *gabs.Container
 
 func HasError(data Container) error {
-
 	// verify if an error field is present in the returned data
 	if err, ok := data.Path("error").Data().(string); ok {
 		return fmt.Errorf("Error fetching data; %s", err)

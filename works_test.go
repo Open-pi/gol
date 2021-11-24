@@ -19,6 +19,14 @@ func TestWorkAuthors(t *testing.T) {
 	//fmt.Println(as)
 }
 
+func TestWork_Editions(t *testing.T) {
+	//t.Parallel()
+	//w, _ := gol.GetWork("OL257943W")
+	//start := time.Now()
+	//w.Editions()
+	//fmt.Println(w.NumberOfEditions)
+}
+
 /*
 func TestCover(t *testing.T) {
 	tt := []struct {
@@ -58,37 +66,4 @@ func TestWorkAuthors(t *testing.T) {
 	}
 }
 
-func TestWork_Editions(t *testing.T) {
-	t.Parallel()
-	tt := []struct {
-		name  string
-		input gol.Work
-		tr    []gol.Book
-	}{
-		{"Test Editions of same work", w, editions},
-	}
-	for _, tc := range tt {
-		tc := tc // capture range variable
-		t.Run(tc.name, func(t *testing.T) {
-			t.Parallel()
-			tr, err := tc.input.Editions()
-			if err != nil {
-				t.Fatalf("%s returned an error %v", tc.name, err)
-			}
-			if !cmp.Equal(tr, tc.tr) {
-				t.Fatalf("Unexpected result: test result different from testdata")
-			}
-		})
-	}
-
-	name := "Test Editions of inexistent work"
-	t.Run(name, func(t *testing.T) {
-		t.Parallel()
-		naw, _ := gol.GetWork("notAndId")
-		_, err := naw.Editions()
-		if err == nil {
-			t.Fatalf("%s, should return error; got %v", name, err)
-		}
-	})
-}
 */

@@ -51,6 +51,12 @@ func GetEditionISBN(isbnid string) (b Book, err error) {
 	return
 }
 
+// Load tries to load the fields from the json container
+func (b *Book) Load() {
+	b.KeyAuthors()
+	b.KeyCovers()
+}
+
 // KeyAuthors returns array of all authors keys
 func (b *Book) KeyAuthors() (keys []string, err error) {
 	if len(b.keyAuthors) > 0 {

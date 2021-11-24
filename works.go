@@ -3,16 +3,19 @@ package gol
 import (
 	"encoding/json"
 	"fmt"
+	"sync"
 )
 
 type Work struct {
 	Container
-	subjects   []string
-	key        string
-	title      string
-	desc       string
-	keyAuthors []string
-	keyCovers  []string
+	subjects         []string
+	key              string
+	title            string
+	desc             string
+	keyAuthors       []string
+	keyCovers        []string
+	NumberOfEditions int
+	editions         []Book
 }
 
 // GetWork returns the work from the workID
@@ -30,13 +33,30 @@ func GetWork(id string) (w Work, err error) {
 	return
 }
 
-// LoadWork parses the json container and fills all the fields
+// Load parses the json container and fills all the fields
 func (w *Work) Load() {
+	w.Key()
 	w.Subjects()
 	w.Title()
 	w.Desc()
 	w.KeyAuthors()
 	w.KeyCovers()
+}
+
+func (w *Work) Key() (string, error) {
+	if w.key != "" {
+		return w.key, nil
+	}
+
+	if key, ok := w.Path("key").Data().(string); ok {
+		w.key = key
+		return w.key, nil
+	}
+
+	if w.key == "" {
+		return w.key, fmt.Errorf("Key not found")
+	}
+	return w.key, nil
 }
 
 func (w *Work) Desc() (string, error) {
@@ -132,31 +152,68 @@ func (w Work) Authors() (a []Author, err error) {
 	return Authors(&w)
 }
 
-/*
-// Editions returns an array of books linked to the work
 func (w *Work) Editions() ([]Book, error) {
-	editions := struct {
-		Entries []Book `json:"entries"`
-		Number  int    `json:"size"`
-		Error   string `json:"error"`
-	}{}
-
-	s := fmt.Sprintf("https://openlibrary.org%s/editions.json", w.Key)
-	resp, err := http.Get(s)
+	if len(w.editions) > 0 {
+		return w.editions, nil
+	}
+	editions, err := w._Editions("")
 	if err != nil {
-		return editions.Entries, err
+		return nil, err
 	}
-
-	defer resp.Body.Close()
-	bodyBytes, _ := ioutil.ReadAll(resp.Body)
-
-	json.Unmarshal(bodyBytes, &editions)
-	if editions.Error == "notfound" {
-		return editions.Entries, errors.New("Editions of work not found")
-	}
-	// Populate the NumberOfEditions
-	w.NumberOfEditions = editions.Number
-
-	return editions.Entries, err
+	w.editions = editions
+	return w.editions, nil
 }
-*/
+
+func (w *Work) _Editions(offset string) ([]Book, error) {
+	var s string
+	if offset != "" {
+		s = fmt.Sprintf("https://openlibrary.org%s", offset)
+	} else {
+		key, err := w.Key()
+		if err != nil {
+			return nil, err
+		}
+		s = fmt.Sprintf("https://openlibrary.org%s/editions.json", key)
+	}
+
+	container, err := Request(s)
+	if err != nil {
+		return nil, err
+	}
+
+	if err := HasError(container); err != nil {
+		return nil, err
+	}
+
+	size, _ := container.Path("size").Data().(json.Number).Int64()
+	w.NumberOfEditions = int(size)
+
+	entries := []Book{}
+	var wg sync.WaitGroup
+	entriesJSON := container.Path("entries").Children()
+	wg.Add(len(entriesJSON))
+
+	for _, edition := range entriesJSON {
+		b := Book{
+			Container: edition,
+		}
+		go func(wg *sync.WaitGroup) {
+			b.Load()
+			wg.Done()
+		}(&wg)
+
+		entries = append(entries, b)
+	}
+
+	// Use the next field If there are still another works to request from the API
+	if next, ok := container.Path("links.next").Data().(string); ok && next != "" {
+		nextEntries, err := w._Editions(next)
+		if err != nil {
+			return entries, err
+		}
+		entries = append(entries, nextEntries...)
+	}
+
+	wg.Wait()
+	return entries, err
+}
