@@ -1,10 +1,7 @@
 package gol
 
 import (
-	"encoding/json"
 	"fmt"
-	"io/ioutil"
-	"net/http"
 )
 
 type QueryURL struct {
@@ -57,15 +54,13 @@ func (q QueryURL) Title(t string) QueryURL {
 }
 
 // Query returns the result of the query from a url -- Constructed by Construct()
-func Query(url string) (result []map[string]interface{}, err error) {
-	resp, err := http.Get(url)
+func Query(url string) (Container, error) {
+	result, err := Request(url)
 	if err != nil {
-		return result, err
+		return nil, err
 	}
-
-	defer resp.Body.Close()
-	bodyBytes, _ := ioutil.ReadAll(resp.Body)
-
-	json.Unmarshal(bodyBytes, &result)
-	return
+	if err := HasError(result); err != nil {
+		return nil, err
+	}
+	return result, nil
 }
