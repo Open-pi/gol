@@ -58,9 +58,9 @@ func (b *Book) Load() {
 }
 
 // KeyAuthors returns array of all authors keys
-func (b *Book) KeyAuthors() (keys []string, err error) {
+func (b *Book) KeyAuthors() ([]string, error) {
 	if len(b.keyAuthors) > 0 {
-		return b.keyAuthors, err
+		return b.keyAuthors, nil
 	}
 	for _, child := range b.S("authors").Children() {
 		for _, v := range child.ChildrenMap() {
@@ -71,7 +71,7 @@ func (b *Book) KeyAuthors() (keys []string, err error) {
 	if len(b.keyAuthors) == 0 {
 		return b.keyAuthors, fmt.Errorf("Could not find any authors")
 	}
-	return
+	return b.keyAuthors, nil
 }
 
 //TODO: add this after dealing with authors API
