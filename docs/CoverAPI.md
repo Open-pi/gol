@@ -1,4 +1,3 @@
-# Depricated! (needs updating)
 # CoverAPI
 This part of the library returns the urls covers of authors and books. This is mainly a "low level function" as it's easier to call, for example [`work.Cover()`](WorkAPI.md) to get the url cover of a certain work.
 

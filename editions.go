@@ -74,11 +74,9 @@ func (b *Book) KeyAuthors() ([]string, error) {
 	return b.keyAuthors, nil
 }
 
-//TODO: add this after dealing with authors API
-// Authors returns all the information related to the book's authors
-//func (b Book) Authors() (a []Author, err error) {
-//return Authors(b)
-//}
+func (b Book) Authors() ([]Author, error) {
+	return Authors(&b)
+}
 
 // KeyCover returns (if it exists) the ID of the work's cover
 func (b *Book) KeyCovers() ([]string, error) {

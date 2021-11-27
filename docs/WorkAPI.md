@@ -1,31 +1,36 @@
-# Depricated! (needs updating)
 # WorkAPI
 This is the documentation page related to Work pages on Open Library that begin with the URL prefix "/works".
 You will find here all the operations you can do on works through the `Work` struct.
 
-In it's simplest form, `GetWork` will fetch all the data and returns a filled `Work` struct. And from the struct you can make other calls to get Editions, Authors, and Covers etc.
+In it's simplest form, `GetWork` will fetch all the data and returns a filled* `Work` struct. And from the struct you can make other calls to get Editions, Authors, and Covers etc.
+
+\* filling the struct requires using the Load() method; When using `GetWork()`, `Load()` is called.
 
 ### List of methods
 | Methods | Args | Returns  |
 |---|---|--|
 | GetWork   | WorkId | (w Work, err error)  |
+| (w *Work) Load | | |
+| (w *Work) Key | | string, error |
+| (w *Work) Desc | | string, error |
+| (w *Work) Subjects | | string, error |
+| (w *Work) Title | | string, error |
+| (w *Work) KeyAuthors | | []string, error |
+| (w *Work) KeyCovers | | []string, error |
+|---|---|--|
+| (w Work) FirstCoverKey | | string  |
 | (w Work) Cover   | size | URL of cover  |
 | (w Work) Authors   |  | []Authors, err  |
 | (w Work) Editions |  | []Book, err |
 
 ### WorkAPI Examples
 ```go
-    work := gol.GetWork("OL45583W")
+    work, err:= gol.GetWork("OL45583W")
     // Output:
-    // gol.Work{
-    //  Created:        gol.Time{Type: "/type/datetime", Value: "2009-10-15T11:23:34.130855"},
-    //	Subjects:       []string{"History and criticism", "Russian literature", "Russian literature, history and criticism"},
-    //	LatestRevision: 4,
-    //	Key:            "/works/OL45583W",
-    //	Title:          "An outline of Russian literature",
-    //	Authors:        []gol.AuthorAndType{{gol.Type{"/type/author_role"}, gol.Author{"/authors/OL18295A"}}},
-    //  ...
-    // }
+    // Work, error
+    
+    // To get fields
+    title, err := work.Title()
     
     cover := work.Cover("L") // Get a large cover of the work
     // Output:
@@ -33,9 +38,9 @@ In it's simplest form, `GetWork` will fetch all the data and returns a filled `W
     
     authors, err := work.Authors() // Get the list of authors that contributed to the work.
     // Output:
-    // []Authors
+    // []Authors, error
 
     editions, err := work.Editions() // Get the list of editions liked to the work.
     // Output:
-    // []Book
+    // []Book, error
 ```
