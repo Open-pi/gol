@@ -107,6 +107,6 @@ func (b Book) FirstCoverKey() string {
 }
 
 // Cover returns (if it exists) the URL of the Book's Cover
-func (b Book) FirstURLCover(size string) string {
+func (b Book) Cover(size string) string {
 	return Cover(b, size)
 }
