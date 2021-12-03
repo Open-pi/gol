@@ -9,11 +9,13 @@ import (
 
 type Book struct {
 	Container
+	title      string
 	keyAuthors []string
 	keyCovers  []string
 	goodreads  string
 	isbn10     string
 	subjects   []string
+	publishers []string
 }
 
 // GetEdition returns a book from its open library id
@@ -153,9 +155,39 @@ func (b *Book) Subjects() ([]string, error) {
 			ss = append(ss, child.Data().(string))
 		}
 		if len(ss) > 0 {
-			return ss, nil
+			b.subjects = ss
+			return b.subjects, nil
 		} else {
 			return nil, fmt.Errorf("could not find subjects")
 		}
+	}
+}
+
+// returns the publishers of the book
+func (b *Book) Publishers() ([]string, error) {
+	if len(b.publishers) > 0 {
+		return b.publishers, nil
+	} else {
+		var ps []string
+		for _, child := range b.Path("publishers").Children() {
+			ps = append(ps, child.Data().(string))
+		}
+		if len(ps) > 0 {
+			b.publishers = ps
+			return b.publishers, nil
+		} else {
+			return nil, fmt.Errorf("could not find publishers")
+		}
+	}
+}
+
+func (b *Book) Title() (string, error) {
+	if len(b.title) > 0 {
+		return b.title, nil
+	} else if title, ok := b.Path("title").Data().(string); ok {
+		b.title = title
+		return b.title, nil
+	} else {
+		return "", fmt.Errorf("could not find title")
 	}
 }
