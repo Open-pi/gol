@@ -61,12 +61,9 @@ func TestKeyCovers(t *testing.T) {
 }
 
 func TestEditionGoodReads(t *testing.T) {
-	//b, _ := gol.GetEdition("OL4554174M")
-	//gr, err := b.GoodReads()
-	//if err != nil {
-	//fmt.Println(err)
-	//}
-	//fmt.Println(gr)
+}
+
+func TestEditionISBN(t *testing.T) {
 }
 
 /*

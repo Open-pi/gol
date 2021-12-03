@@ -12,6 +12,7 @@ type Book struct {
 	keyAuthors []string
 	keyCovers  []string
 	goodreads  string
+	isbn10     string
 }
 
 // GetEdition returns a book from its open library id
@@ -57,6 +58,7 @@ func (b *Book) Load() {
 	b.KeyAuthors()
 	b.KeyCovers()
 	b.GoodReads()
+	b.Isbn10()
 }
 
 // KeyAuthors returns array of all authors keys
@@ -124,5 +126,18 @@ func (b Book) GoodReads() (string, error) {
 			return b.goodreads, nil
 		}
 		return "", fmt.Errorf("could not find goodreads identifier")
+	}
+}
+
+// Isbn10 returns the isbn10 identifier
+func (b Book) Isbn10() (string, error) {
+	if b.isbn10 != "" {
+		return b.goodreads, nil
+	} else {
+		for _, child := range b.Path("isbn_10").Children() {
+			b.isbn10 = child.Data().(string)
+			return b.isbn10, nil
+		}
+		return "", fmt.Errorf("could not find isbn10 identifier")
 	}
 }
