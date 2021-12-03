@@ -11,6 +11,7 @@ type Book struct {
 	Container
 	keyAuthors []string
 	keyCovers  []string
+	goodreads  string
 }
 
 // GetEdition returns a book from its open library id
@@ -55,6 +56,7 @@ func GetEditionISBN(isbnid string) (b Book, err error) {
 func (b *Book) Load() {
 	b.KeyAuthors()
 	b.KeyCovers()
+	b.GoodReads()
 }
 
 // KeyAuthors returns array of all authors keys
@@ -74,6 +76,7 @@ func (b *Book) KeyAuthors() ([]string, error) {
 	return b.keyAuthors, nil
 }
 
+// Authors returns the authors of the book
 func (b Book) Authors() ([]Author, error) {
 	return Authors(&b)
 }
@@ -92,7 +95,7 @@ func (b *Book) KeyCovers() ([]string, error) {
 	}
 
 	if len(b.keyCovers) == 0 {
-		return b.keyCovers, fmt.Errorf("Could not find key covers")
+		return b.keyCovers, fmt.Errorf("could not find key covers")
 	}
 	return b.keyCovers, nil
 }
@@ -109,4 +112,17 @@ func (b Book) FirstCoverKey() string {
 // Cover returns (if it exists) the URL of the Book's Cover
 func (b Book) Cover(size string) string {
 	return Cover(b, size)
+}
+
+// GoodReads returns the goodreads identifier
+func (b Book) GoodReads() (string, error) {
+	if b.goodreads != "" {
+		return b.goodreads, nil
+	} else {
+		for _, child := range b.Path("identifiers.goodreads").Children() {
+			b.goodreads = child.Data().(string)
+			return b.goodreads, nil
+		}
+		return "", fmt.Errorf("could not find goodreads identifier")
+	}
 }
