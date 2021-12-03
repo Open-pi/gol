@@ -13,6 +13,7 @@ type Book struct {
 	keyCovers  []string
 	goodreads  string
 	isbn10     string
+	subjects   []string
 }
 
 // GetEdition returns a book from its open library id
@@ -130,7 +131,7 @@ func (b Book) GoodReads() (string, error) {
 }
 
 // Isbn10 returns the isbn10 identifier
-func (b Book) Isbn10() (string, error) {
+func (b *Book) Isbn10() (string, error) {
 	if b.isbn10 != "" {
 		return b.goodreads, nil
 	} else {
@@ -139,5 +140,22 @@ func (b Book) Isbn10() (string, error) {
 			return b.isbn10, nil
 		}
 		return "", fmt.Errorf("could not find isbn10 identifier")
+	}
+}
+
+// Subjects returns the subjects of the book
+func (b *Book) Subjects() ([]string, error) {
+	if len(b.subjects) > 0 {
+		return b.subjects, nil
+	} else {
+		var ss []string
+		for _, child := range b.Path("subjects").Children() {
+			ss = append(ss, child.Data().(string))
+		}
+		if len(ss) > 0 {
+			return ss, nil
+		} else {
+			return nil, fmt.Errorf("could not find subjects")
+		}
 	}
 }

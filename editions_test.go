@@ -66,6 +66,9 @@ func TestEditionGoodReads(t *testing.T) {
 func TestEditionISBN(t *testing.T) {
 }
 
+func TestEditionSubjects(t *testing.T) {
+}
+
 /*
 //func TestEditionAuthors(t *testing.T) {
 //tr, err := editions[0].Authors()
