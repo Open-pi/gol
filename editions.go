@@ -12,6 +12,7 @@ type Book struct {
 	title      string
 	keyAuthors []string
 	keyCovers  []string
+	workKeys   []string
 	goodreads  string
 	isbn10     string
 	subjects   []string
@@ -189,5 +190,22 @@ func (b *Book) Title() (string, error) {
 		return b.title, nil
 	} else {
 		return "", fmt.Errorf("could not find title")
+	}
+}
+
+func (b *Book) WorkKeys() ([]string, error) {
+	if len(b.workKeys) > 0 {
+		return b.workKeys, nil
+	} else {
+		for _, child := range b.Path("works").Children() {
+			for _, key := range child.ChildrenMap() {
+				b.workKeys = append(b.workKeys, key.Data().(string))
+			}
+		}
+		if len(b.workKeys) == 0 {
+			return nil, fmt.Errorf("could not find work keys")
+		} else {
+			return b.workKeys, nil
+		}
 	}
 }
