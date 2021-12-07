@@ -60,7 +60,7 @@ func GetEditionISBN(isbnid string) (b Book, err error) {
 
 // Load tries to load the fields from the json container
 func (b *Book) Load() {
-	b.KeyAuthors()
+	b.RefreshKeyAuthors()
 	b.KeyCovers()
 	b.GoodReads()
 	b.Isbn10()
@@ -71,16 +71,24 @@ func (b *Book) KeyAuthors() ([]string, error) {
 	if len(b.keyAuthors) > 0 {
 		return b.keyAuthors, nil
 	}
+	return b.RefreshKeyAuthors()
+}
+
+// RefreshKeyAuthors returns key authors without the use of caching
+func (b *Book) RefreshKeyAuthors() ([]string, error) {
+	var keys []string
 	for _, child := range b.S("authors").Children() {
 		for _, v := range child.ChildrenMap() {
-			b.keyAuthors = append(b.keyAuthors, v.Data().(string))
+			keys = append(keys, v.Data().(string))
 		}
 	}
 
-	if len(b.keyAuthors) == 0 {
-		return b.keyAuthors, fmt.Errorf("Could not find any authors")
+	if len(keys) == 0 {
+		return nil, fmt.Errorf("could not find key authors")
+	} else {
+		b.keyAuthors = keys
+		return b.keyAuthors, nil
 	}
-	return b.keyAuthors, nil
 }
 
 // Authors returns the authors of the book
