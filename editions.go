@@ -9,14 +9,15 @@ import (
 
 type Book struct {
 	Container
-	title      string
-	keyAuthors []string
-	keyCovers  []string
-	workKeys   []string
-	goodreads  string
-	isbn10     string
-	subjects   []string
-	publishers []string
+	title         string
+	numberOfPages int
+	keyAuthors    []string
+	keyCovers     []string
+	workKeys      []string
+	goodreads     string
+	isbn10        string
+	subjects      []string
+	publishers    []string
 }
 
 // GetEdition returns a book from its open library id
@@ -207,5 +208,19 @@ func (b *Book) WorkKeys() ([]string, error) {
 		} else {
 			return b.workKeys, nil
 		}
+	}
+}
+
+func (b *Book) NumberOfPages() (int, error) {
+	if b.numberOfPages != 0 {
+		return b.numberOfPages, nil
+	} else if number, ok := b.Path("number_of_pages").Data().(json.Number); ok {
+		inInt, err := number.Int64()
+		if err == nil {
+			b.numberOfPages = int(inInt)
+		}
+		return b.numberOfPages, nil
+	} else {
+		return 0, fmt.Errorf("could not find number_of_pages")
 	}
 }

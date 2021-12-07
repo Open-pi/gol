@@ -78,6 +78,9 @@ func TestEditionTitle(t *testing.T) {
 func TestEditionWorkKeys(t *testing.T) {
 }
 
+func TestEditionNumberOfPages(t *testing.T) {
+}
+
 /*
 //func TestEditionAuthors(t *testing.T) {
 //tr, err := editions[0].Authors()
