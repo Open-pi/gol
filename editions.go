@@ -9,6 +9,7 @@ import (
 
 type Book struct {
 	Container
+	key           string
 	title         string
 	numberOfPages int
 	keyAuthors    []string
@@ -64,6 +65,23 @@ func (b *Book) Load() {
 	b.KeyCovers()
 	b.GoodReads()
 	b.Isbn10()
+}
+
+func (b *Book) Key() (string, error) {
+	if len(b.key) > 0 {
+		return b.key, nil
+	} else {
+		return b.RefreshKey()
+	}
+}
+
+func (b *Book) RefreshKey() (string, error) {
+	if key, ok := b.Path("key").Data().(string); ok {
+		b.key = key
+		return b.key, nil
+	} else {
+		return "", fmt.Errorf("could not find key")
+	}
 }
 
 // KeyAuthors returns array of all authors keys
