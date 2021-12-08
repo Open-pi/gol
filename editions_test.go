@@ -57,6 +57,9 @@ func TestEditionKeyAuthors(t *testing.T) {
 	})
 }
 
+func TestEditionRefresh(t *testing.T) {
+}
+
 func TestKeyCovers(t *testing.T) {
 }
 

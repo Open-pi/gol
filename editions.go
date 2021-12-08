@@ -21,18 +21,26 @@ type Book struct {
 	publishers    []string
 }
 
-// GetEdition returns a book from its open library id
-func GetEdition(olid string) (b Book, err error) {
-	b.Container, err = MakeBookRequest(olid)
+// return of json container of the Edition requested
+func getEditionContainer(olid string) (c Container, err error) {
+	c, err = MakeBookRequest(olid)
 	if err != nil {
-		return b, err
+		return c, err
 	}
 
 	// verify if an error field is present in the returned data
-	if err := HasError(b.Container); err != nil {
+	if err := HasError(c); err != nil {
+		return c, err
+	}
+	return
+}
+
+// GetEdition returns a book from its open library id
+func GetEdition(olid string) (b Book, err error) {
+	b.Container, err = getEditionContainer(olid)
+	if err != nil {
 		return b, err
 	}
-
 	return
 }
 
@@ -57,6 +65,21 @@ func GetEditionISBN(isbnid string) (b Book, err error) {
 	}
 
 	return
+}
+
+// Refresh Container/Json Data
+func (b *Book) Refresh() error {
+	key, err := b.Key()
+	if err != nil {
+		return err
+	}
+
+	key = key[7:]
+	b.Container, err = getEditionContainer(key)
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 // Load tries to load the fields from the json container
