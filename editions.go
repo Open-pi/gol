@@ -101,18 +101,24 @@ func (b *Book) KeyCovers() ([]string, error) {
 	if len(b.keyCovers) > 0 {
 		return b.keyCovers, nil
 	}
+	return b.RefreshKeyCovers()
+}
 
+// Forces a refresh of the KeyCovers
+func (b *Book) RefreshKeyCovers() ([]string, error) {
+	var keys []string
 	for _, child := range b.S("covers").Children() {
 		id, err := child.Data().(json.Number).Int64()
 		if err == nil {
-			b.keyCovers = append(b.keyCovers, fmt.Sprintf("%v", id))
+			keys = append(keys, fmt.Sprintf("%v", id))
 		}
 	}
-
-	if len(b.keyCovers) == 0 {
-		return b.keyCovers, fmt.Errorf("could not find key covers")
+	if len(keys) == 0 {
+		return nil, fmt.Errorf("could not find cover keys")
+	} else {
+		b.keyCovers = keys
+		return b.keyCovers, nil
 	}
-	return b.keyCovers, nil
 }
 
 // FirstCoverKey returns the first cover if it exists
