@@ -183,6 +183,7 @@ func (b *Book) Publishers() ([]string, error) {
 	}
 }
 
+// Returns the title
 func (b *Book) Title() (string, error) {
 	if len(b.title) > 0 {
 		return b.title, nil
@@ -194,6 +195,7 @@ func (b *Book) Title() (string, error) {
 	}
 }
 
+// Returns the work keys of the book
 func (b *Book) WorkKeys() ([]string, error) {
 	if len(b.workKeys) > 0 {
 		return b.workKeys, nil
@@ -211,6 +213,7 @@ func (b *Book) WorkKeys() ([]string, error) {
 	}
 }
 
+// Returns number of pages of the book
 func (b *Book) NumberOfPages() (int, error) {
 	if b.numberOfPages != 0 {
 		return b.numberOfPages, nil

@@ -16,8 +16,25 @@ In these examples you will find the most useful methods/function, for more low l
     // To load "all" information from the JSON data in the struct
     book.Load()
 
-    // Returns all the information of the book's authors
+    // To get the title of the book
+    title, err := book.Title()
 
+    // To get the number of pages
+    pages, err := book.NumberOfPages()
+
+    // to get the Publishers of the book
+    pubs, err := book.Publishers()
+
+    // to get the subjects of the book
+    subjects, err := book.Subjects()
+    
+    // to get the isbn10 identifier
+    isbn, err := book.Isbn10()
+    
+    // to get goodreads id
+    gr, err := book.GoodReads()
+
+    // Returns all the information of the book's authors
     // Get the keys/ids of the book's author
     keyauthors, err := book.KeyAuthors()
 
