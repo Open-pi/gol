@@ -1,7 +1,7 @@
 # AuthorAPI
 The AuthorAPI deals with everything related to Author pages on Open Library that begin with the URL prefix `/authors`.
 
-In these docs you will find all the methods of the `Author` struct. To populate the struct you have to firt use the the `GetAuthor`.
+In these docs you will find all the methods of the `Author` struct. To populate the struct you must first call `GetAuthor`.
 
 *If you are looking to get the Author from a work or edition, head out to that API's documentation i.e (`docs/WorkAPI.md` or `docs/BookAPI.md` etc.)*
 
