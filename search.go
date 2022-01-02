@@ -60,7 +60,7 @@ func (s SearchURL) Subject(sbj string) SearchURL {
 	return s
 }
 
-// Construct contructs and returns a complete searchable url
+// Construct constructs and returns a complete searchable url
 func (su SearchURL) Construct() string {
 	return fmt.Sprintf("%s%s%s%s%s", su.url, su.all, su.title, su.author, su.subject)
 }
